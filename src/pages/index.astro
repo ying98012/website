@@ -1,59 +1,146 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Button from "@/components/Button.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
-const featuredProjects = projects.filter((project) => project.data.featured);
 ---
 
 <BaseLayout
   title="Weiying Portfolio"
-  description="以 Astro + Pages CMS 建立的現代化工程師作品集。"
+  description="DEV_CORE 作品集首頁"
+  disableMainWrapper={true}
 >
-  <section class="space-y-6 pb-section">
-    <p class="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-neonBlue">
-      Obsidian x Vibrant
-    </p>
-    <h1 class="max-w-4xl text-4xl font-extrabold leading-tight md:text-6xl">
-      Build fast. Ship clean.
-      <span class="block bg-vibrant-accent bg-clip-text text-transparent">
-        Engineer delightful product experiences.
-      </span>
-    </h1>
-    <p class="max-w-3xl text-lg text-obsidian-muted">
-      聚焦在內容驅動與高可維護前端架構，採用 Astro 靜態渲染、Pages CMS 內容維運與
-      GitHub Actions 自動部署。
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <Button href="#projects">查看作品</Button>
-      <Button href="https://github.com/ian13" variant="secondary">GitHub</Button>
-    </div>
-  </section>
-
-  <section id="projects" class="space-y-6">
-    <div class="flex items-end justify-between gap-4">
-      <div>
-        <p class="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-neonPurple">
-          Selected Work
-        </p>
-        <h2 class="mt-2 text-3xl font-bold">精選專案</h2>
+  <div class="min-h-screen pt-20">
+    <nav class="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-background/80 backdrop-blur-md">
+      <div
+        class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop"
+      >
+        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
+          DEV_CORE
+        </div>
+        <div class="hidden space-x-8 md:flex">
+          <a class="border-b-2 border-secondary pb-1 font-body-md text-body-md text-secondary" href="#projects"
+            >專案內容</a
+          >
+          <a
+            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
+            href="#"
+            >經歷</a
+          >
+          <a
+            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
+            href="#"
+            >技術棧</a
+          >
+          <a
+            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
+            href="#"
+            >聯絡我</a
+          >
+        </div>
+        <div class="flex items-center">
+          <a class="font-body-md text-body-md text-secondary transition-transform active:scale-95" href="/admin-dashboard"
+            >管理後台</a
+          >
+        </div>
       </div>
-      <span class="text-sm text-obsidian-muted">{featuredProjects.length} featured</span>
-    </div>
-    <div class="grid gap-6 md:grid-cols-2">
-      {featuredProjects.map((project) => (
-        <ProjectCard project={project} />
-      ))}
-    </div>
-  </section>
+    </nav>
 
-  <section class="pt-16">
-    <p class="text-sm text-obsidian-muted">
-      全部專案共 {projects.length} 筆，包含影片展示、技術堆疊與 GitHub 文件連結。
-    </p>
-  </section>
+    <main class="flex-grow">
+      <section
+        class="mx-auto flex max-w-container-max flex-col items-center px-margin-mobile py-section-gap text-center md:px-margin-desktop"
+      >
+        <h1 class="mb-stack-md font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
+          打造卓越數位體驗
+        </h1>
+        <p class="mb-stack-lg max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+          全端開發工程師，專注於可擴展的 Web 應用程序和互動式體驗。
+        </p>
+        <div class="flex gap-gutter">
+          <a
+            class="btn-primary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
+            href="https://github.com/ying98012"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="material-symbols-outlined">code</span>
+            GitHub 連結
+          </a>
+          <a class="btn-secondary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps" href="#">
+            <span class="material-symbols-outlined">work</span>
+            LinkedIn 連結
+          </a>
+        </div>
+      </section>
+
+      <section id="projects" class="mx-auto max-w-container-max px-margin-mobile pb-section-gap md:px-margin-desktop">
+        <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3">
+          {
+            projects.map((project) => (
+              <article class="glass-panel glass-panel-hover group flex flex-col transition-all duration-300">
+                <div class="relative aspect-video w-full overflow-hidden bg-surface-container-highest">
+                  <img
+                    alt={project.data.title}
+                    class="h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                    src={project.data.coverImage}
+                  />
+                </div>
+                <div class="flex flex-grow flex-col justify-between p-stack-md">
+                  <div>
+                    <h3 class="mb-stack-sm font-headline-md text-headline-md text-on-surface transition-colors duration-300 group-hover:text-brand-blue">
+                      {project.data.title}
+                    </h3>
+                    <div class="mb-stack-md flex flex-wrap gap-2">
+                      {project.data.techStack.map((tech) => (
+                        <span class="tech-badge px-2 py-1 font-code-sm text-code-sm text-on-surface-variant">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <a
+                    class="flex w-fit items-center gap-1 font-code-sm text-code-sm text-brand-purple transition-colors duration-300 hover:text-brand-blue"
+                    href={`/projects/${project.slug}/`}
+                  >
+                    <span class="material-symbols-outlined text-sm">description</span>
+                    View README.md 文檔
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+
+    <footer class="w-full border-t border-outline-variant/10 bg-surface-container-lowest py-stack-lg">
+      <div
+        class="mx-auto flex max-w-container-max flex-col items-center justify-between gap-base px-margin-mobile md:flex-row"
+      >
+        <div class="font-label-caps text-label-caps text-primary">© 2024 DEV_CORE // 為效能而生</div>
+        <div class="flex space-x-6 font-code-sm text-code-sm text-on-surface-variant">
+          <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#">Email</a>
+          <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#"
+            >LinkedIn</a
+          >
+          <a
+            class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
+            href="https://github.com/ying98012"
+            target="_blank"
+            rel="noreferrer"
+            >GitHub</a
+          >
+          <a
+            class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
+            href="https://github.com/ying98012/website"
+            target="_blank"
+            rel="noreferrer"
+            >Source</a
+          >
+        </div>
+      </div>
+    </footer>
+  </div>
 </BaseLayout>

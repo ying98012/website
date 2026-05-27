@@ -62,6 +62,6 @@ npm run build
 ## 部署注意事項
 
 - `astro.config.mjs` 目前使用：
-  - `site: https://ian13.github.io`
+  - `site: https://ying98012.github.io`
   - `base: /website`
 - 若 repository 名稱或 GitHub 帳號不同，請同步調整上述值。

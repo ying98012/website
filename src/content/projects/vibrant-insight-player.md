@@ -8,7 +8,7 @@ techStack:
   - Framer Motion
 coverImage: /uploads/vibrant-insight-player.svg
 videoUrl: https://www.youtube.com/watch?v=aqz-KE-bpKQ
-githubUrl: https://github.com/ian13/vibrant-insight-player
+githubUrl: https://github.com/ying98012/vibrant-insight-player
 featured: false
 publishedAt: 2026-03-27
 ---

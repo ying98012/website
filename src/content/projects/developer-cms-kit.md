@@ -8,7 +8,7 @@ techStack:
   - GitHub Actions
 coverImage: /uploads/developer-cms-kit.svg
 videoUrl: https://vimeo.com/148751763
-githubUrl: https://github.com/ian13/developer-cms-kit
+githubUrl: https://github.com/ying98012/developer-cms-kit
 featured: true
 publishedAt: 2026-04-18
 ---

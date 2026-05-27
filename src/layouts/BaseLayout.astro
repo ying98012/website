@@ -4,11 +4,15 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  mainClass?: string;
+  disableMainWrapper?: boolean;
 }
 
 const {
   title,
-  description = "以 Astro 與 Pages CMS 建立的工程師作品集網站。"
+  description = "以 Astro 與 Pages CMS 建立的工程師作品集網站。",
+  mainClass = "mx-auto min-h-screen max-w-container px-5 py-10 md:px-16",
+  disableMainWrapper = false
 } = Astro.props;
 ---
 
@@ -21,8 +25,14 @@ const {
     <meta name="description" content={description} />
   </head>
   <body>
-    <main class="mx-auto min-h-screen max-w-container px-5 py-10 md:px-16">
-      <slot />
-    </main>
+    {
+      disableMainWrapper ? (
+        <slot />
+      ) : (
+        <main class={mainClass}>
+          <slot />
+        </main>
+      )
+    }
   </body>
 </html>

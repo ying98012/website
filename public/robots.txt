@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ian13.github.io/website/sitemap-index.xml
+Sitemap: https://ying98012.github.io/website/sitemap-index.xml

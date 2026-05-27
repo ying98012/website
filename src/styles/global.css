@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +10,7 @@
 }
 
 body {
-  @apply bg-obsidian-bg text-obsidian-text font-sans antialiased;
+  @apply bg-background text-on-surface font-sans antialiased;
   background-image:
     radial-gradient(
       circle at 20% 20%,
@@ -27,4 +28,60 @@ body {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.btn-primary {
+  background-color: #00d4ff;
+  color: #0a0a0a;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid #9d50bb;
+  color: #e5e2e1;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(157, 80, 187, 0.2);
+  box-shadow: 0 0 15px rgba(157, 80, 187, 0.3);
+}
+
+.tech-badge {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+}
+
+.cms-input {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cms-input:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+  outline: none;
+}
+
+.upload-zone {
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.05);
 }
