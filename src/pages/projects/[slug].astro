@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Button from "@/components/Button.astro";
+import TechBadge from "@/components/TechBadge.astro";
+import VideoEmbed from "@/components/VideoEmbed.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+if (!slug) {
+  return Astro.redirect("/");
+}
+
+const allProjects = await getCollection("projects");
+const project = allProjects.find((entry) => entry.slug === slug);
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await project.render();
+---
+
+<BaseLayout title={`${project.data.title} | Weiying Portfolio`} description={project.data.summary}>
+  <article class="space-y-8">
+    <header class="space-y-4">
+      <p class="font-mono text-xs uppercase tracking-[0.18em] text-obsidian-neonBlue">
+        Project Detail
+      </p>
+      <h1 class="text-4xl font-extrabold">{project.data.title}</h1>
+      <p class="max-w-3xl text-lg text-obsidian-muted">{project.data.summary}</p>
+      <div class="flex flex-wrap gap-2">
+        {project.data.techStack.map((tech) => (
+          <TechBadge label={tech} />
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <Button href={project.data.githubUrl}>GitHub Repo</Button>
+        <Button href="/" variant="secondary">回到首頁</Button>
+      </div>
+    </header>
+
+    <VideoEmbed url={project.data.videoUrl} />
+
+    <img
+      src={project.data.coverImage}
+      alt={`${project.data.title} screenshot`}
+      class="glass-panel w-full rounded-xl object-cover"
+    />
+
+    <section class="glass-panel prose prose-invert max-w-none rounded-xl p-6 prose-p:text-obsidian-muted">
+      <Content />
+    </section>
+  </article>
+</BaseLayout>

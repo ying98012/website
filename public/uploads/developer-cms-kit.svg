@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" fill="#131313" />
+  <rect x="120" y="120" width="1040" height="480" rx="18" fill="#1c1b1b" stroke="#444748" />
+  <rect x="180" y="210" width="320" height="52" rx="8" fill="#00d2fd" fill-opacity="0.16" />
+  <rect x="180" y="286" width="480" height="24" rx="6" fill="#353535" />
+  <rect x="180" y="326" width="390" height="24" rx="6" fill="#353535" />
+  <text x="120" y="82" fill="#E5E2E1" font-family="Inter, sans-serif" font-size="28" font-weight="700">Developer CMS Kit</text>
+  <text x="180" y="242" fill="#B4EBFF" font-family="JetBrains Mono, monospace" font-size="18">content model / media / publish</text>
+</svg>

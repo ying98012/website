@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <defs>
+    <linearGradient id="g" x1="220" y1="120" x2="1040" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00d2fd" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#edb1ff" stop-opacity="0.5" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#131313" />
+  <rect x="140" y="90" width="1000" height="540" rx="24" fill="url(#g)" fill-opacity="0.25" stroke="#C4C7C7" />
+  <circle cx="640" cy="360" r="62" fill="#20201f" stroke="#E5E2E1" />
+  <polygon points="625,330 625,390 680,360" fill="#00d2fd" />
+  <text x="140" y="65" fill="#E5E2E1" font-family="Inter, sans-serif" font-size="28" font-weight="700">Vibrant Insight Player</text>
+</svg>

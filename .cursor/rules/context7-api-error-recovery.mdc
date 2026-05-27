@@ -1,0 +1,20 @@
+---
+description: Use context7 MCP for API error syntax recovery
+alwaysApply: true
+---
+
+# API Error Recovery With context7 MCP
+
+When any API call or API-like CLI command fails due to syntax, version mismatch, deprecated parameters, or schema errors, follow this order:
+
+1. Stop retrying the same failing command.
+2. Query `user-context7` MCP for the current official syntax and examples relevant to the failing API/tool version.
+3. Update the command/request format to match the latest documented syntax.
+4. Retry once with corrected parameters.
+5. If still failing, report the exact error and the syntax source used.
+
+## Required Behavior
+
+- Do not guess API payload fields or flags after a syntax error.
+- Prefer context7 documentation over memory for versioned API behavior.
+- Record the corrected syntax in the response summary when a fix is applied.

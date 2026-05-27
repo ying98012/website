@@ -1,0 +1,59 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Button from "@/components/Button.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+const featuredProjects = projects.filter((project) => project.data.featured);
+---
+
+<BaseLayout
+  title="Weiying Portfolio"
+  description="以 Astro + Pages CMS 建立的現代化工程師作品集。"
+>
+  <section class="space-y-6 pb-section">
+    <p class="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-neonBlue">
+      Obsidian x Vibrant
+    </p>
+    <h1 class="max-w-4xl text-4xl font-extrabold leading-tight md:text-6xl">
+      Build fast. Ship clean.
+      <span class="block bg-vibrant-accent bg-clip-text text-transparent">
+        Engineer delightful product experiences.
+      </span>
+    </h1>
+    <p class="max-w-3xl text-lg text-obsidian-muted">
+      聚焦在內容驅動與高可維護前端架構，採用 Astro 靜態渲染、Pages CMS 內容維運與
+      GitHub Actions 自動部署。
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <Button href="#projects">查看作品</Button>
+      <Button href="https://github.com/ian13" variant="secondary">GitHub</Button>
+    </div>
+  </section>
+
+  <section id="projects" class="space-y-6">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-neonPurple">
+          Selected Work
+        </p>
+        <h2 class="mt-2 text-3xl font-bold">精選專案</h2>
+      </div>
+      <span class="text-sm text-obsidian-muted">{featuredProjects.length} featured</span>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2">
+      {featuredProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </section>
+
+  <section class="pt-16">
+    <p class="text-sm text-obsidian-muted">
+      全部專案共 {projects.length} 筆，包含影片展示、技術堆疊與 GitHub 文件連結。
+    </p>
+  </section>
+</BaseLayout>

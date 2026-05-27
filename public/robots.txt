@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ian13.github.io/website/sitemap-index.xml
