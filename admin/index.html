@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio CMS</title>
+    <meta http-equiv="refresh" content="0; url=/website/admin/" />
+    <title>Portfolio Admin（重新導向中…）</title>
     <style>
       body {
         margin: 0;
@@ -14,68 +15,25 @@
         color: #e5e2e1;
         font-family: Inter, sans-serif;
       }
-      .wrap {
-        width: min(760px, 92vw);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        padding: 24px;
-        background: rgba(255, 255, 255, 0.03);
-      }
-      .actions {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-top: 16px;
-      }
       a {
         color: #00d2fd;
-        text-decoration: none;
-        border: 1px solid rgba(0, 210, 253, 0.4);
-        border-radius: 8px;
-        padding: 10px 14px;
-      }
-      a:hover {
-        background: rgba(0, 210, 253, 0.12);
-      }
-      code {
-        color: #edb1ff;
       }
     </style>
   </head>
   <body>
-    <section class="wrap">
-      <h1>CMS 管理入口</h1>
+    <section>
       <p>
-        目前採用 Pages CMS + Git-backed 流程，內容設定檔在
-        <code>admin/config.yml</code>，資料目錄在
-        <code>src/content/projects</code>；頁面程式碼可直接在 GitHub 編輯。
+        管理後台已啟用 GitHub OAuth 2.0 登入，請前往
+        <a href="/website/admin/">/admin/</a>。
       </p>
-      <div class="actions">
-        <a href="https://pagescms.org" target="_blank" rel="noreferrer"
-          >開啟 Pages CMS</a
-        >
-        <a href="/admin-dashboard/" target="_blank" rel="noreferrer"
-          >開啟內建後台儀表板</a
-        >
-        <a
-          href="https://github.com/ying98012/website/tree/main/src/content/projects"
-          target="_blank"
-          rel="noreferrer"
-          >GitHub 內容目錄</a
-        >
-        <a
-          href="https://github.com/ying98012/website/tree/main/src/pages"
-          target="_blank"
-          rel="noreferrer"
-          >GitHub 頁面目錄</a
-        >
-      </div>
-      <div class="actions">
-        <a href="https://github.com/ying98012/website/edit/main/src/pages/index.astro" target="_blank" rel="noreferrer">編輯首頁</a>
-        <a href="https://github.com/ying98012/website/edit/main/src/pages/experience.astro" target="_blank" rel="noreferrer">編輯經歷頁</a>
-        <a href="https://github.com/ying98012/website/edit/main/src/pages/stack.astro" target="_blank" rel="noreferrer">編輯技術棧頁</a>
-        <a href="https://github.com/ying98012/website/edit/main/src/pages/contact.astro" target="_blank" rel="noreferrer">編輯聯絡我頁</a>
-      </div>
     </section>
+    <script>
+      // 同站直接導向（涵蓋本機 dev 與 GitHub Pages /website 雙環境）
+      (function () {
+        var base =
+          location.pathname.indexOf("/website/") === 0 ? "/website" : "";
+        location.replace(base + "/admin/");
+      })();
+    </script>
   </body>
 </html>

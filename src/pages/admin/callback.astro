@@ -1,0 +1,57 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const adminLoginUrl = `${base.replace(/\/$/, "")}/admin/`;
+---
+
+<BaseLayout title="登入處理中…" disableMainWrapper={true}>
+  <div class="grid min-h-screen place-items-center px-6">
+    <section class="glass-panel w-full max-w-lg space-y-4 rounded-xl p-6 text-center">
+      <h1 class="text-2xl font-bold">GitHub OAuth 登入</h1>
+      <p id="callback-status" class="text-sm text-on-surface-variant">
+        正在驗證授權碼，請稍候…
+      </p>
+      <div class="hidden flex-col gap-3" id="callback-error">
+        <p class="text-sm text-error" id="callback-error-message"></p>
+        <a
+          class="btn-secondary inline-block rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={adminLoginUrl}
+        >
+          返回登入頁
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { handleOAuthCallback, OAuthCallbackError } from "@/lib/auth";
+
+  const statusEl = document.getElementById("callback-status");
+  const errorWrapper = document.getElementById("callback-error");
+  const errorMessageEl = document.getElementById("callback-error-message");
+
+  function showError(message: string): void {
+    if (statusEl) statusEl.classList.add("hidden");
+    if (errorWrapper) errorWrapper.classList.replace("hidden", "flex");
+    if (errorMessageEl) errorMessageEl.textContent = message;
+  }
+
+  (async () => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const { user, nextPath } = await handleOAuthCallback(params);
+      if (statusEl) statusEl.textContent = `登入成功，歡迎 ${user.name ?? user.login}，正在進入後台…`;
+      window.location.replace(nextPath);
+    } catch (error) {
+      const message =
+        error instanceof OAuthCallbackError
+          ? error.message
+          : error instanceof Error
+            ? error.message
+            : "未知錯誤";
+      showError(message);
+    }
+  })();
+</script>

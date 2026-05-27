@@ -1,0 +1,17 @@
+name = "weiying-portfolio-oauth"
+main = "src/worker.ts"
+compatibility_date = "2025-05-01"
+
+# 預設環境（也可使用 wrangler deploy --env production）
+[vars]
+# 允許呼叫此 Worker 的前端 Origin（以逗號分隔）
+# 例：https://ying98012.github.io,http://localhost:4321
+ALLOWED_ORIGINS = "https://ying98012.github.io,http://localhost:4321"
+
+# 允許從 GitHub 取得 token 後再次驗證身分的 GitHub 帳號（以逗號分隔，小寫）
+# 例：ying98012
+ALLOWED_LOGINS = "ying98012"
+
+# === 以下為機密設定，請使用 wrangler secret put 指令設定，不要寫入此檔案 ===
+# wrangler secret put GITHUB_CLIENT_ID
+# wrangler secret put GITHUB_CLIENT_SECRET

@@ -17,6 +17,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+      PUBLIC_OAUTH_CLIENT_ID: ${{ vars.PUBLIC_OAUTH_CLIENT_ID }}
+      PUBLIC_OAUTH_PROXY_URL: ${{ vars.PUBLIC_OAUTH_PROXY_URL }}
+      PUBLIC_OAUTH_SCOPE: ${{ vars.PUBLIC_OAUTH_SCOPE }}
+      PUBLIC_OAUTH_ALLOWED_LOGINS: ${{ vars.PUBLIC_OAUTH_ALLOWED_LOGINS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
