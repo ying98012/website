@@ -25,6 +25,8 @@ const publishedAt = project.data.publishedAt.toLocaleDateString("zh-TW", {
   year: "numeric",
   month: "long"
 });
+const base = import.meta.env.BASE_URL;
+const homeUrl = base;
 ---
 
 <BaseLayout
@@ -38,12 +40,12 @@ const publishedAt = project.data.publishedAt.toLocaleDateString("zh-TW", {
         class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop"
       >
         <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
-          DEV_CORE
+          個人網站
         </div>
         <div class="font-body-md text-body-md">
           <a
             class="flex items-center gap-2 text-secondary transition-transform duration-300 hover:text-on-surface-variant"
-            href="/"
+            href={homeUrl}
           >
             <span class="material-symbols-outlined">arrow_back</span>
             返回專案列表
@@ -130,7 +132,7 @@ const publishedAt = project.data.publishedAt.toLocaleDateString("zh-TW", {
       <div
         class="mx-auto flex max-w-container-max flex-col items-center justify-between gap-base px-margin-mobile md:flex-row"
       >
-        <div class="font-label-caps text-label-caps text-primary">© 2024 DEV_CORE // 為效能而生</div>
+        <div class="font-label-caps text-label-caps text-primary">© 2024 個人網站 // 為效能而生</div>
         <nav class="flex gap-stack-md font-code-sm text-code-sm">
           <a class="text-on-surface-variant underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#"
             >Email</a

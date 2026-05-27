@@ -6,6 +6,9 @@ const projects = (await getCollection("projects")).map((entry) => ({
   slug: entry.slug,
   frontmatter: entry.data
 }));
+const base = import.meta.env.BASE_URL;
+const adminHome = `${base}admin/`;
+const siteHome = base;
 ---
 
 <BaseLayout title="Web Admin Dashboard - Add New Project" disableMainWrapper={true}>
@@ -37,13 +40,13 @@ const projects = (await getCollection("projects")).map((entry) => ({
           <span class="material-symbols-outlined">settings</span>
           <span>設定</span>
         </a>
-        <a class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high" href="/admin/">
+        <a class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high" href={adminHome}>
           <span class="material-symbols-outlined">edit_note</span>
           <span>CMS 編輯器</span>
         </a>
       </div>
       <div class="mt-auto px-4">
-        <a class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high" href="/">
+        <a class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high" href={siteHome}>
           <span class="material-symbols-outlined">logout</span>
           <span>返回網站</span>
         </a>
@@ -209,7 +212,7 @@ const projects = (await getCollection("projects")).map((entry) => ({
         <header class="mb-4 flex items-center justify-between">
           <h3 class="font-headline-md text-headline-md text-on-surface">現有專案管理</h3>
           <a
-            href="/"
+            href={siteHome}
             class="font-code-sm text-code-sm text-secondary transition-colors hover:text-on-surface"
           >
             回前台預覽
@@ -250,8 +253,15 @@ const projects = (await getCollection("projects")).map((entry) => ({
       </section>
     </main>
   </div>
-  <script is:inline>
+  <script is:inline define:vars={{ base }}>
     // @ts-nocheck
+    (() => {
+      const auth = sessionStorage.getItem("admin_auth");
+      if (auth !== "ok") {
+        const next = encodeURIComponent(window.location.pathname);
+        window.location.href = `${base}admin/?next=${next}`;
+      }
+    })();
     const form = document.getElementById("project-form");
     const markdownOutput = document.getElementById("markdown-output");
     const techInput = document.getElementById("tech-input");
