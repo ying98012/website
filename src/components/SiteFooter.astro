@@ -1,0 +1,33 @@
+---
+const sourceUrl = "https://github.com/ying98012/website";
+const githubUrl = "https://github.com/ying98012";
+---
+
+<footer class="w-full border-t border-outline-variant/10 bg-surface-container-lowest py-stack-lg">
+  <div class="mx-auto flex max-w-container-max flex-col items-center justify-end gap-base px-margin-mobile md:flex-row">
+    <div class="flex space-x-6 font-code-sm text-code-sm text-on-surface-variant">
+      <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="mailto:hello@example.com">
+        Email
+      </a>
+      <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#">
+        LinkedIn
+      </a>
+      <a
+        class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
+        href={githubUrl}
+        target="_blank"
+        rel="noreferrer"
+      >
+        GitHub
+      </a>
+      <a
+        class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
+        href={sourceUrl}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Source
+      </a>
+    </div>
+  </div>
+</footer>

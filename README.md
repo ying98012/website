@@ -6,6 +6,8 @@
 
 - **內容可維護**：以 Markdown 作為作品資料來源，CMS 可直接編輯。
 - **多媒體展示**：作品詳情頁支援 YouTube/Vimeo 影片嵌入。
+- **頁面化導覽**：新增獨立的 `經歷`、`技術棧`、`聯絡我` 頁面，並由頂部導覽列直接切換。
+- **頁面可視化維護**：Pages CMS 可直接編輯首頁／經歷／技術棧／聯絡我的文案與區塊資料。
 - **技術導向視覺**：Obsidian Synth 深色基調 + Vibrant 重點強調（Hybrid）。
 - **自動部署**：`main` 分支推送後自動執行 lint、typecheck、build 與 Pages 部署。
 
@@ -45,13 +47,18 @@ npm run build
 │   └── uploads/
 ├── src/
 │   ├── components/
+│   │   ├── SiteFooter.astro
+│   │   └── TopNav.astro
 │   ├── content/
 │   │   ├── config.ts
 │   │   └── projects/
 │   ├── layouts/
 │   ├── pages/
+│   │   ├── contact.astro
+│   │   ├── experience.astro
 │   │   ├── index.astro
-│   │   └── projects/[slug].astro
+│   │   ├── projects/[slug].astro
+│   │   └── stack.astro
 │   └── styles/global.css
 ├── astro.config.mjs
 ├── tailwind.config.mjs

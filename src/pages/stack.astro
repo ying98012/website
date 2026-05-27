@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import { getEntry } from "astro:content";
+
+const stackPage = await getEntry("stack-page", "content");
+
+if (!stackPage) {
+  throw new Error("Missing stack page content: src/content/stack-page/content.md");
+}
+---
+
+<BaseLayout title="技術棧 | Weiying Portfolio" description="核心技能與工具生態系" disableMainWrapper={true}>
+  <div class="min-h-screen pt-20">
+    <TopNav active="stack" />
+
+    <main class="mx-auto max-w-container-max px-margin-mobile py-section-gap md:px-margin-desktop">
+      <header class="mb-stack-lg">
+        <h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
+          {stackPage.data.pageTitle}
+        </h1>
+        <p class="mt-2 font-body-lg text-body-lg text-on-surface-variant">{stackPage.data.pageDescription}</p>
+      </header>
+
+      <div class="grid grid-cols-1 gap-gutter md:grid-cols-3">
+        <article class="glass-panel glass-panel-hover rounded-xl p-stack-md md:col-span-2">
+          <h2 class="mb-4 font-body-lg text-body-lg font-bold text-on-surface">Core Skills</h2>
+          <div class="space-y-4">
+            {
+              stackPage.data.coreSkills.map((skill) => (
+                <div>
+                  <div class="mb-1 flex items-center justify-between font-code-sm text-code-sm">
+                    <span>{skill.name}</span>
+                    <span class="text-secondary">{skill.level}%</span>
+                  </div>
+                  <div class="h-1 bg-surface-container-high">
+                    <div class="h-1 bg-gradient-to-r from-brand-blue to-brand-purple" style={`width: ${skill.level}%`}></div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="glass-panel glass-panel-hover rounded-xl p-stack-md">
+          <h2 class="mb-4 font-body-lg text-body-lg font-bold text-on-surface">Tools & Ecosystem</h2>
+          <div class="flex flex-wrap gap-2">
+            {stackPage.data.tools.map((tool) => <span class="tech-badge px-3 py-1 font-code-sm text-code-sm text-on-surface">{tool}</span>)}
+          </div>
+        </article>
+
+        <article class="glass-panel glass-panel-hover rounded-xl p-stack-md md:col-span-3">
+          <h2 class="font-code-sm text-code-sm uppercase tracking-widest text-secondary">{stackPage.data.focusLabel}</h2>
+          <p class="mt-2 font-body-lg text-body-lg text-on-surface">
+            {stackPage.data.focusDescription}
+          </p>
+        </article>
+      </div>
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

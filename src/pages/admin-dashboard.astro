@@ -8,6 +8,14 @@ const projects = (await getCollection("projects")).map((entry) => ({
 }));
 const base = import.meta.env.BASE_URL;
 const siteHome = base;
+const editablePages = [
+  { label: "首頁", path: "src/pages/index.astro" },
+  { label: "經歷頁", path: "src/pages/experience.astro" },
+  { label: "技術棧頁", path: "src/pages/stack.astro" },
+  { label: "聯絡我頁", path: "src/pages/contact.astro" },
+  { label: "管理入口頁", path: "src/pages/admin/index.astro" }
+];
+const repoEditPrefix = "https://github.com/ying98012/website/edit/main/";
 ---
 
 <BaseLayout title="Web Admin Dashboard - Add New Project" disableMainWrapper={true}>
@@ -198,6 +206,27 @@ const siteHome = base;
           </div>
         </div>
       </form>
+
+      <section class="glass-panel rounded-xl p-6 md:p-8">
+        <header class="mb-4">
+          <h3 class="font-headline-md text-headline-md text-on-surface">頁面管理</h3>
+          <p class="mt-2 font-body-md text-body-md text-on-surface-variant">可直接編輯目前網站所有主要頁面程式碼。</p>
+        </header>
+        <div class="grid gap-3 md:grid-cols-2">
+          {
+            editablePages.map((item) => (
+              <a
+                href={`${repoEditPrefix}${item.path}`}
+                class="btn-secondary rounded px-4 py-3 font-label-caps text-label-caps"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </section>
 
       <section class="glass-panel rounded-xl p-6 md:p-8">
         <header class="mb-4 flex items-center justify-between">

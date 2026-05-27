@@ -3,11 +3,9 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 
-const isDev = process.env.NODE_ENV === "development";
-
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   site: "https://ying98012.github.io",
-  base: isDev ? "/" : "/website",
+  base: command === "dev" ? "/" : "/website",
   integrations: [react(), tailwind(), sitemap()],
   output: "static",
-});
+}));

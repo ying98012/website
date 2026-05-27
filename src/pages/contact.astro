@@ -1,0 +1,65 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import { getEntry } from "astro:content";
+
+const contactPage = await getEntry("contact-page", "content");
+
+if (!contactPage) {
+  throw new Error("Missing contact page content: src/content/contact-page/content.md");
+}
+---
+
+<BaseLayout title="聯絡我 | Weiying Portfolio" description="技術合作與專案聯繫入口" disableMainWrapper={true}>
+  <div class="min-h-screen pt-20">
+    <TopNav active="contact" />
+
+    <main class="mx-auto max-w-container-max px-margin-mobile py-section-gap md:px-margin-desktop">
+      <div class="grid grid-cols-1 items-start gap-stack-lg md:grid-cols-2">
+        <div>
+          <h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
+            {contactPage.data.titlePrefix}{" "}
+            <span class="bg-gradient-to-r from-brand-blue to-brand-purple bg-clip-text text-transparent">
+              {contactPage.data.titleHighlight}
+            </span>
+          </h1>
+          <p class="mt-4 max-w-md font-body-md text-body-md text-on-surface-variant">
+            {contactPage.data.pageDescription}
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 font-code-sm text-code-sm">
+            {
+              contactPage.data.socialLinks.map((link) => (
+                <a class="btn-secondary rounded px-4 py-2" href={link.url} target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <form class="glass-panel rounded-xl p-stack-md">
+          <div class="space-y-4">
+            <label class="block font-label-caps text-label-caps text-on-surface-variant">
+              {contactPage.data.formNameLabel}
+              <input class="cms-input mt-2 w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" type="text" placeholder="王小明" />
+            </label>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant">
+              {contactPage.data.formEmailLabel}
+              <input class="cms-input mt-2 w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" type="email" placeholder="you@example.com" />
+            </label>
+            <label class="block font-label-caps text-label-caps text-on-surface-variant">
+              {contactPage.data.formMessageLabel}
+              <textarea class="cms-input mt-2 min-h-[140px] w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="輸入你的合作想法..."></textarea>
+            </label>
+          </div>
+          <button type="button" class="btn-primary mt-6 w-full rounded px-6 py-3 font-label-caps text-label-caps uppercase tracking-widest">
+            {contactPage.data.submitButtonLabel}
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

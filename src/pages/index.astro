@@ -1,12 +1,17 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import { getCollection, getEntry } from "astro:content";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
-const base = import.meta.env.BASE_URL;
-const adminUrl = `${base}admin/`;
+const homePage = await getEntry("home-page", "content");
+
+if (!homePage) {
+  throw new Error("Missing home page content: src/content/home-page/content.md");
+}
 ---
 
 <BaseLayout
@@ -15,69 +20,47 @@ const adminUrl = `${base}admin/`;
   disableMainWrapper={true}
 >
   <div class="min-h-screen pt-20">
-    <nav class="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-background/80 backdrop-blur-md">
-      <div
-        class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop"
-      >
-        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
-          個人網站
-        </div>
-        <div class="hidden space-x-8 md:flex">
-          <a class="border-b-2 border-secondary pb-1 font-body-md text-body-md text-secondary" href="#projects"
-            >專案內容</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
-            href="#"
-            >經歷</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
-            href="#"
-            >技術棧</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-secondary"
-            href="#"
-            >聯絡我</a
-          >
-        </div>
-        <div class="flex items-center">
-          <a class="font-body-md text-body-md text-secondary transition-transform active:scale-95" href={adminUrl}
-            >管理後台</a
-          >
-        </div>
-      </div>
-    </nav>
+    <TopNav active="projects" />
 
     <main class="flex-grow">
       <section
         class="mx-auto flex max-w-container-max flex-col items-center px-margin-mobile py-section-gap text-center md:px-margin-desktop"
       >
         <h1 class="mb-stack-md font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
-          你好，我是 Ying，一名軟體工程師
+          {homePage.data.heroTitle}
         </h1>
         <p class="mb-stack-lg max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
-          這裡是我個人開發的作品集與技術文檔。主要涵蓋行動端應用程式、互動科技實作以及我對軟體架構的探索，點擊下方作品即可查看詳細的實作細節與 README。
+          {homePage.data.heroDescription}
         </p>
         <div class="flex gap-gutter">
           <a
             class="btn-primary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
-            href="https://github.com/ying98012"
+            href={homePage.data.primaryButtonUrl}
             target="_blank"
             rel="noreferrer"
           >
             <span class="material-symbols-outlined">code</span>
-            GitHub 連結
+            {homePage.data.primaryButtonLabel}
           </a>
-          <a class="btn-secondary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps" href="#">
+          <a
+            class="btn-secondary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
+            href={homePage.data.secondaryButtonUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             <span class="material-symbols-outlined">work</span>
-            LinkedIn 連結
+            {homePage.data.secondaryButtonLabel}
           </a>
         </div>
       </section>
 
       <section id="projects" class="mx-auto max-w-container-max px-margin-mobile pb-section-gap md:px-margin-desktop">
+        <header class="mb-stack-lg flex items-end justify-between gap-3 border-b border-outline-variant/10 pb-stack-sm">
+          <div>
+            <h2 class="font-headline-md text-headline-md text-on-surface">{homePage.data.projectsTitle}</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">{homePage.data.projectsDescription}</p>
+          </div>
+        </header>
         <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3">
           {
             projects.map((project) => (
@@ -115,34 +98,9 @@ const adminUrl = `${base}admin/`;
           }
         </div>
       </section>
+
     </main>
 
-    <footer class="w-full border-t border-outline-variant/10 bg-surface-container-lowest py-stack-lg">
-      <div
-        class="mx-auto flex max-w-container-max flex-col items-center justify-between gap-base px-margin-mobile md:flex-row"
-      >
-        <div class="font-label-caps text-label-caps text-primary">© 2024 個人網站 // 為效能而生</div>
-        <div class="flex space-x-6 font-code-sm text-code-sm text-on-surface-variant">
-          <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#">Email</a>
-          <a class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#"
-            >LinkedIn</a
-          >
-          <a
-            class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
-            href="https://github.com/ying98012"
-            target="_blank"
-            rel="noreferrer"
-            >GitHub</a
-          >
-          <a
-            class="underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
-            href="https://github.com/ying98012/website"
-            target="_blank"
-            rel="noreferrer"
-            >Source</a
-          >
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </BaseLayout>

@@ -53,3 +53,185 @@ content:
       - name: body
         label: Content
         type: rich-text
+
+  - name: homePage
+    label: Home Page
+    type: collection
+    path: src/content/home-page
+    filename: content
+    fields:
+      - name: heroTitle
+        label: Hero Title
+        type: string
+        required: true
+      - name: heroDescription
+        label: Hero Description
+        type: text
+        required: true
+      - name: primaryButtonLabel
+        label: Primary Button Label
+        type: string
+        required: true
+      - name: primaryButtonUrl
+        label: Primary Button URL
+        type: string
+        required: true
+      - name: secondaryButtonLabel
+        label: Secondary Button Label
+        type: string
+        required: true
+      - name: secondaryButtonUrl
+        label: Secondary Button URL
+        type: string
+        required: true
+      - name: projectsTitle
+        label: Projects Title
+        type: string
+        required: true
+      - name: projectsDescription
+        label: Projects Description
+        type: string
+        required: true
+      - name: body
+        label: Notes
+        type: rich-text
+
+  - name: experiencePage
+    label: Experience Page
+    type: collection
+    path: src/content/experience-page
+    filename: content
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+        required: true
+      - name: pageDescription
+        label: Page Description
+        type: text
+        required: true
+      - name: timeline
+        label: Timeline
+        type: object
+        list: true
+        fields:
+          - name: period
+            label: Period
+            type: string
+            required: true
+          - name: role
+            label: Role
+            type: string
+            required: true
+          - name: company
+            label: Company
+            type: string
+            required: true
+          - name: highlights
+            label: Highlights
+            type: string
+            list: true
+            required: true
+          - name: tech
+            label: Tech Stack
+            type: string
+            list: true
+            required: true
+      - name: body
+        label: Notes
+        type: rich-text
+
+  - name: stackPage
+    label: Stack Page
+    type: collection
+    path: src/content/stack-page
+    filename: content
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+        required: true
+      - name: pageDescription
+        label: Page Description
+        type: text
+        required: true
+      - name: coreSkills
+        label: Core Skills
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: Skill Name
+            type: string
+            required: true
+          - name: level
+            label: Skill Level (0-100)
+            type: number
+            required: true
+      - name: tools
+        label: Tools
+        type: string
+        list: true
+        required: true
+      - name: focusLabel
+        label: Focus Label
+        type: string
+        required: true
+      - name: focusDescription
+        label: Focus Description
+        type: text
+        required: true
+      - name: body
+        label: Notes
+        type: rich-text
+
+  - name: contactPage
+    label: Contact Page
+    type: collection
+    path: src/content/contact-page
+    filename: content
+    fields:
+      - name: titlePrefix
+        label: Title Prefix
+        type: string
+        required: true
+      - name: titleHighlight
+        label: Title Highlight
+        type: string
+        required: true
+      - name: pageDescription
+        label: Page Description
+        type: text
+        required: true
+      - name: socialLinks
+        label: Social Links
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Label
+            type: string
+            required: true
+          - name: url
+            label: URL
+            type: string
+            required: true
+      - name: formNameLabel
+        label: Form Name Label
+        type: string
+        required: true
+      - name: formEmailLabel
+        label: Form Email Label
+        type: string
+        required: true
+      - name: formMessageLabel
+        label: Form Message Label
+        type: string
+        required: true
+      - name: submitButtonLabel
+        label: Submit Button Label
+        type: string
+        required: true
+      - name: body
+        label: Notes
+        type: rich-text

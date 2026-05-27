@@ -15,6 +15,77 @@ const projects = defineCollection({
   }),
 });
 
+const homePage = defineCollection({
+  type: "content",
+  schema: z.object({
+    heroTitle: z.string(),
+    heroDescription: z.string(),
+    primaryButtonLabel: z.string(),
+    primaryButtonUrl: z.string().url(),
+    secondaryButtonLabel: z.string(),
+    secondaryButtonUrl: z.string().url(),
+    projectsTitle: z.string(),
+    projectsDescription: z.string(),
+  }),
+});
+
+const experiencePage = defineCollection({
+  type: "content",
+  schema: z.object({
+    pageTitle: z.string(),
+    pageDescription: z.string(),
+    timeline: z.array(
+      z.object({
+        period: z.string(),
+        role: z.string(),
+        company: z.string(),
+        highlights: z.array(z.string()).min(1),
+        tech: z.array(z.string()).min(1),
+      }),
+    ),
+  }),
+});
+
+const stackPage = defineCollection({
+  type: "content",
+  schema: z.object({
+    pageTitle: z.string(),
+    pageDescription: z.string(),
+    coreSkills: z.array(
+      z.object({
+        name: z.string(),
+        level: z.number().min(0).max(100),
+      }),
+    ),
+    tools: z.array(z.string()),
+    focusLabel: z.string(),
+    focusDescription: z.string(),
+  }),
+});
+
+const contactPage = defineCollection({
+  type: "content",
+  schema: z.object({
+    titlePrefix: z.string(),
+    titleHighlight: z.string(),
+    pageDescription: z.string(),
+    socialLinks: z.array(
+      z.object({
+        label: z.string(),
+        url: z.string(),
+      }),
+    ),
+    formNameLabel: z.string(),
+    formEmailLabel: z.string(),
+    formMessageLabel: z.string(),
+    submitButtonLabel: z.string(),
+  }),
+});
+
 export const collections = {
+  "contact-page": contactPage,
+  "experience-page": experiencePage,
+  "home-page": homePage,
   projects,
+  "stack-page": stackPage,
 };
