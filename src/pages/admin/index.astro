@@ -3,75 +3,53 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const base = import.meta.env.BASE_URL;
 const dashboardUrl = `${base}admin-dashboard/`;
+const pagesCmsUrl = "https://pagescms.org";
+const repoContentUrl = "https://github.com/ying98012/website/tree/main/src/content/projects";
 ---
 
-<BaseLayout title="管理後台登入" disableMainWrapper={true}>
+<BaseLayout title="管理後台入口（GitHub OAuth）" disableMainWrapper={true}>
   <div class="grid min-h-screen place-items-center px-6">
-    <section class="glass-panel w-full max-w-md space-y-5 rounded-xl p-6">
-      <h1 class="text-2xl font-bold">管理後台登入</h1>
+    <section class="glass-panel w-full max-w-2xl space-y-5 rounded-xl p-6">
+      <h1 class="text-2xl font-bold">管理後台入口（GitHub OAuth）</h1>
       <p class="text-sm text-on-surface-variant">
-        請輸入帳號密碼進入管理後台。此版本為前端靜態驗證，僅供基本防護用途。
+        已切換為 Pages CMS 原生權限流程。請使用 GitHub 帳號登入 Pages CMS，並安裝 GitHub App 到你的 repo。
       </p>
+      <ol class="list-decimal space-y-2 pl-5 text-sm text-on-surface-variant">
+        <li>點擊「開啟 Pages CMS」，使用 GitHub OAuth 登入。</li>
+        <li>選擇並授權 `ying98012/website` 倉庫（僅授予需要的 repo 權限）。</li>
+        <li>在 Pages CMS 介面編輯 `src/content/projects` 內容並提交變更。</li>
+      </ol>
 
-      <form id="login-form" class="space-y-4">
-        <div class="space-y-2">
-          <label class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant" for="username"
-            >帳號</label
-          >
-          <input
-            id="username"
-            class="cms-input w-full rounded-lg px-4 py-3"
-            type="text"
-            autocomplete="username"
-            required
-          />
-        </div>
-        <div class="space-y-2">
-          <label class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant" for="password"
-            >密碼</label
-          >
-          <input
-            id="password"
-            class="cms-input w-full rounded-lg px-4 py-3"
-            type="password"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-        <p id="error-msg" class="hidden text-sm text-error">帳號或密碼錯誤</p>
-        <button class="btn-primary w-full rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest" type="submit">
-          登入後台
-        </button>
-      </form>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a
+          class="btn-primary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={pagesCmsUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          開啟 Pages CMS
+        </a>
+        <a
+          class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={repoContentUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub 內容目錄
+        </a>
+        <a
+          class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={dashboardUrl}
+        >
+          開啟本地草稿工具
+        </a>
+      </div>
+
+      <div class="rounded-lg border border-outline-variant/30 bg-surface-container-low p-4 text-xs text-on-surface-variant">
+        安全提醒：已移除前端硬編碼帳密。真正的編輯權限改由 GitHub OAuth + 倉庫授權控制。
+      </div>
 
       <a class="block text-center text-sm text-secondary underline underline-offset-4" href={base}>回到首頁</a>
     </section>
   </div>
-
-  <script is:inline define:vars={{ dashboardUrl }}>
-    // @ts-nocheck
-    const ADMIN_USERNAME = "ying_122";
-    const ADMIN_PASSWORD = "ian920716";
-
-    const form = document.getElementById("login-form");
-    const errorMsg = document.getElementById("error-msg");
-
-    const params = new URLSearchParams(window.location.search);
-    const next = params.get("next");
-
-    form?.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const username = document.getElementById("username")?.value?.trim();
-      const password = document.getElementById("password")?.value;
-
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        sessionStorage.setItem("admin_auth", "ok");
-        window.location.href = next || dashboardUrl;
-        return;
-      }
-
-      errorMsg?.classList.remove("hidden");
-    });
-  </script>
 </BaseLayout>

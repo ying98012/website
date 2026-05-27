@@ -7,7 +7,6 @@ const projects = (await getCollection("projects")).map((entry) => ({
   frontmatter: entry.data
 }));
 const base = import.meta.env.BASE_URL;
-const adminHome = `${base}admin/`;
 const siteHome = base;
 ---
 
@@ -40,9 +39,13 @@ const siteHome = base;
           <span class="material-symbols-outlined">settings</span>
           <span>設定</span>
         </a>
-        <a class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high" href={adminHome}>
-          <span class="material-symbols-outlined">edit_note</span>
-          <span>CMS 編輯器</span>
+        <a
+          id="sidebar-logout"
+          class="flex cursor-pointer items-center gap-3 rounded px-4 py-3 text-on-surface-variant transition-all hover:bg-surface-container-high"
+          href={siteHome}
+        >
+          <span class="material-symbols-outlined">logout</span>
+          <span>登出</span>
         </a>
       </div>
       <div class="mt-auto px-4">
@@ -123,18 +126,6 @@ const siteHome = base;
                 使用技術
               </label>
               <div id="tech-stack-input" class="cms-input flex min-h-[56px] flex-wrap items-center gap-2 rounded-lg p-3">
-                <span class="tech-badge flex items-center gap-2 px-3 py-1 font-code-sm text-[12px]" data-tag>
-                  React
-                  <button class="text-on-surface-variant transition-colors hover:text-error" type="button" data-remove-tag>
-                    <span class="material-symbols-outlined text-[14px]">close</span>
-                  </button>
-                </span>
-                <span class="tech-badge flex items-center gap-2 px-3 py-1 font-code-sm text-[12px]" data-tag>
-                  Tailwind CSS
-                  <button class="text-on-surface-variant transition-colors hover:text-error" type="button" data-remove-tag>
-                    <span class="material-symbols-outlined text-[14px]">close</span>
-                  </button>
-                </span>
                 <input
                   id="tech-input"
                   class="min-w-[120px] flex-grow border-none bg-transparent font-code-sm text-code-sm text-on-surface placeholder-on-surface-variant/50 outline-none focus:ring-0"
@@ -253,15 +244,8 @@ const siteHome = base;
       </section>
     </main>
   </div>
-  <script is:inline define:vars={{ base }}>
+  <script is:inline>
     // @ts-nocheck
-    (() => {
-      const auth = sessionStorage.getItem("admin_auth");
-      if (auth !== "ok") {
-        const next = encodeURIComponent(window.location.pathname);
-        window.location.href = `${base}admin/?next=${next}`;
-      }
-    })();
     const form = document.getElementById("project-form");
     const markdownOutput = document.getElementById("markdown-output");
     const techInput = document.getElementById("tech-input");
@@ -269,6 +253,7 @@ const siteHome = base;
     const generateButton = document.getElementById("generate-draft");
     const copyButton = document.getElementById("copy-markdown");
     const openCmsButton = document.getElementById("open-cms");
+    const sidebarLogout = document.getElementById("sidebar-logout");
 
     const addTag = (label) => {
       const trimmed = label.trim();
@@ -358,6 +343,10 @@ publishedAt: ${today}
     openCmsButton?.addEventListener("click", () => {
       generateMarkdown();
       window.open("https://pagescms.org", "_blank", "noopener,noreferrer");
+    });
+
+    sidebarLogout?.addEventListener("click", () => {
+      sessionStorage.removeItem("admin_auth");
     });
 
     form?.addEventListener("submit", (event) => {
