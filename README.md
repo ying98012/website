@@ -1,19 +1,19 @@
 # 個人求職作品集網站 (Astro)
 
-這是一個面向前端/軟體工程職缺的作品集網站，以 Astro 靜態生成為核心，內容以 Markdown 方式維護，並透過 GitHub Actions 自動部署至 GitHub Pages。
+這是一個以 Astro 建置的個人作品集網站，前端頁面由 `src/content/**` 的 Markdown 內容驅動，並整合 Pages CMS 進行可視化編輯。程式碼推送到 `main` 後，會由 GitHub Actions 自動部署到 GitHub Pages。
 
 ## 核心特點
 
-- **內容可維護**：以 Markdown 作為作品資料來源，直接透過 Git 版本管理維護。
-- **多媒體展示**：作品詳情頁支援 YouTube/Vimeo 影片嵌入。
-- **頁面化導覽**：新增獨立的 `經歷`、`技術棧`、`聯絡我` 頁面，並由頂部導覽列直接切換。
-- **技術導向視覺**：Obsidian Synth 深色基調 + Vibrant 重點強調（Hybrid）。
-- **自動部署**：`main` 分支推送後自動執行 lint、typecheck、build 與 Pages 部署。
+- **Git-based CMS**：使用 Pages CMS 直接編輯 repo 內容並提交變更。
+- **內容模型清楚**：透過 Astro Content Collections 管理 projects 與各靜態頁內容。
+- **多頁導覽**：首頁、經歷、技術棧、聯絡我與作品詳情頁分離。
+- **技術展示友善**：支援作品縮圖、技術標籤與 YouTube/Vimeo 影片嵌入。
+- **自動部署**：push `main` 後執行 `lint`、`typecheck`、`build` 與 Pages deploy。
 
 ## 技術棧
 
 - **框架**：Astro 5 + React 19
-- **樣式**：Tailwind CSS（自訂 Obsidian/Vibrant Token）
+- **樣式**：Tailwind CSS + PostCSS
 - **內容**：Astro Content Collections + Markdown
 - **部署**：GitHub Pages + GitHub Actions
 
@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-常用指令：
+常用檢查指令：
 
 ```bash
 npm run lint
@@ -37,54 +37,62 @@ npm run build
 ```text
 .
 ├── .github/workflows/deploy.yml
+├── .pages.yml
 ├── admin/
-│   ├── config.yml              # Pages CMS schema（相容配置）
-│   └── index.html              # 舊版入口，自動轉跳至 /admin/
-├── public/
-│   ├── robots.txt
-│   └── uploads/
+│   ├── config.yml
+│   └── index.html
+├── public/uploads/
 ├── src/
 │   ├── components/
 │   ├── content/
 │   │   ├── config.ts
-│   │   └── projects/
+│   │   ├── projects/
+│   │   ├── home-page/content.md
+│   │   ├── experience-page/content.md
+│   │   ├── stack-page/content.md
+│   │   └── contact-page/content.md
 │   ├── layouts/
 │   ├── pages/
-│   │   ├── admin/index.astro   # Pages CMS 管理入口說明
-│   │   ├── contact.astro
-│   │   ├── experience.astro
+│   │   ├── admin/index.astro
 │   │   ├── index.astro
-│   │   ├── projects/[slug].astro
-│   │   └── stack.astro
+│   │   ├── experience.astro
+│   │   ├── stack.astro
+│   │   ├── contact.astro
+│   │   └── projects/[slug].astro
 │   └── styles/global.css
-├── .pages.yml                  # Pages CMS 主設定
 ├── astro.config.mjs
+├── postcss.config.cjs
 ├── tailwind.config.mjs
-├── tsconfig.json
 └── package.json
 ```
 
 ## 內容管理（Pages CMS）
 
-本專案已改為 **Pages CMS** 作為唯一後台內容管理方式。
+目前唯一後台為 **Pages CMS**。
 
-管理入口：`/admin/`
+- 站內入口：`/admin/`（`src/pages/admin/index.astro`）
+- CMS 平台：[pagescms.org](https://pagescms.org/)
 
-### 使用流程
+使用流程：
 
-1. 前往 [pagescms.org](https://pagescms.org/) 並使用 GitHub 登入。
-2. 確保已安裝 Pages CMS GitHub App，且本 repo (`ying98012/website`) 有寫入權限。
-3. 開啟 repo 後，Pages CMS 會讀取根目錄 `.pages.yml`（及 `admin/config.yml` 相容配置）。
-4. 編輯並儲存內容後，變更會直接提交到 GitHub，再由 GitHub Actions 自動部署。
+1. 用 GitHub 帳號登入 Pages CMS。
+2. 確認已授權 Pages CMS App 可寫入 repo `ying98012/website`。
+3. CMS 會讀取根目錄 `.pages.yml`（並保留 `admin/config.yml` 相容配置）。
+4. 儲存後會直接 commit 到 GitHub，觸發網站自動部署。
 
-### 設定檔重點
+## 部署設定（GitHub Pages）
 
-- `.pages.yml`：Pages CMS 主設定，定義 collections、欄位、媒體路徑。
-- `admin/config.yml`：保留相容配置，內容與 `.pages.yml` 同步。
+目前部署目標：
 
-## 部署注意事項（GitHub Pages）
+- 網站：`https://ying98012.github.io/website/`
+- 管理入口：`https://ying98012.github.io/website/admin/`
 
-- `astro.config.mjs` 目前使用：
-  - `site: https://ying98012.github.io`
-  - `base: /website`
-- 若 repository 名稱或 GitHub 帳號不同，請同步調整上述值。
+關鍵設定：
+
+- `astro.config.mjs`
+  - `site: "https://ying98012.github.io"`
+  - `base: "/website"`
+- `.github/workflows/deploy.yml`
+  - push `main` 時執行 build 與 `actions/deploy-pages`
+
+若 repo 名稱或帳號更動，請同步調整 `site` / `base` 與相關連結。
