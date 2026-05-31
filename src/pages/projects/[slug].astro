@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -10,14 +11,16 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
+const base = import.meta.env.BASE_URL;
+const baseWithSlash = base.endsWith("/") ? base : `${base}/`;
 if (!slug) {
-  return Astro.redirect("/");
+  return Astro.redirect(baseWithSlash);
 }
 
 const allProjects = await getCollection("projects");
 const project = allProjects.find((entry) => entry.slug === slug);
 if (!project) {
-  return Astro.redirect("/404");
+  return Astro.redirect(`${baseWithSlash}404`);
 }
 
 const { Content } = await project.render();
@@ -25,8 +28,10 @@ const publishedAt = project.data.publishedAt.toLocaleDateString("zh-TW", {
   year: "numeric",
   month: "long"
 });
-const base = import.meta.env.BASE_URL;
-const homeUrl = base;
+const homeUrl = baseWithSlash;
+const coverImageUrl = project.data.coverImage.startsWith("/")
+  ? `${baseWithSlash}${project.data.coverImage.slice(1)}`
+  : project.data.coverImage;
 ---
 
 <BaseLayout
@@ -39,9 +44,7 @@ const homeUrl = base;
       <div
         class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop"
       >
-        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
-          個人網站
-        </div>
+        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">個人網站</div>
         <div class="font-body-md text-body-md">
           <a
             class="flex items-center gap-2 text-secondary transition-transform duration-300 hover:text-on-surface-variant"
@@ -61,7 +64,7 @@ const homeUrl = base;
             <img
               alt={project.data.title}
               class="h-full w-full object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-              src={project.data.coverImage}
+              src={coverImageUrl}
             />
             <div class="absolute inset-0 flex items-center justify-center">
               <a
@@ -128,34 +131,6 @@ const homeUrl = base;
       </div>
     </main>
 
-    <footer class="mt-auto w-full border-t border-outline-variant/10 bg-surface-container-lowest py-stack-lg">
-      <div
-        class="mx-auto flex max-w-container-max flex-col items-center justify-between gap-base px-margin-mobile md:flex-row"
-      >
-        <div class="font-label-caps text-label-caps text-primary">© 2024 個人網站 // 為效能而生</div>
-        <nav class="flex gap-stack-md font-code-sm text-code-sm">
-          <a class="text-on-surface-variant underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#"
-            >Email</a
-          >
-          <a class="text-on-surface-variant underline underline-offset-4 transition-opacity duration-300 hover:text-secondary" href="#"
-            >LinkedIn</a
-          >
-          <a
-            class="text-on-surface-variant underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
-            href="https://github.com/ying98012"
-            target="_blank"
-            rel="noreferrer"
-            >GitHub</a
-          >
-          <a
-            class="text-on-surface-variant underline underline-offset-4 transition-opacity duration-300 hover:text-secondary"
-            href="https://github.com/ying98012/website"
-            target="_blank"
-            rel="noreferrer"
-            >Source</a
-          >
-        </nav>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </BaseLayout>

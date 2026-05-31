@@ -56,9 +56,8 @@ content:
 
   - name: homePage
     label: Home Page
-    type: collection
-    path: src/content/home-page
-    filename: content
+    type: file
+    path: src/content/home-page/content.md
     fields:
       - name: heroTitle
         label: Hero Title
@@ -98,9 +97,8 @@ content:
 
   - name: experiencePage
     label: Experience Page
-    type: collection
-    path: src/content/experience-page
-    filename: content
+    type: file
+    path: src/content/experience-page/content.md
     fields:
       - name: pageTitle
         label: Page Title
@@ -143,9 +141,8 @@ content:
 
   - name: stackPage
     label: Stack Page
-    type: collection
-    path: src/content/stack-page
-    filename: content
+    type: file
+    path: src/content/stack-page/content.md
     fields:
       - name: pageTitle
         label: Page Title
@@ -173,6 +170,11 @@ content:
         type: string
         list: true
         required: true
+      - name: foundations
+        label: Foundations
+        type: string
+        list: true
+        required: true
       - name: focusLabel
         label: Focus Label
         type: string
@@ -187,16 +189,11 @@ content:
 
   - name: contactPage
     label: Contact Page
-    type: collection
-    path: src/content/contact-page
-    filename: content
+    type: file
+    path: src/content/contact-page/content.md
     fields:
-      - name: titlePrefix
-        label: Title Prefix
-        type: string
-        required: true
-      - name: titleHighlight
-        label: Title Highlight
+      - name: title
+        label: Title
         type: string
         required: true
       - name: pageDescription
@@ -216,20 +213,16 @@ content:
             label: URL
             type: string
             required: true
-      - name: formNameLabel
-        label: Form Name Label
+      - name: contactEmailLabel
+        label: Contact Email Label
         type: string
         required: true
-      - name: formEmailLabel
-        label: Form Email Label
+      - name: contactEmail
+        label: Contact Email
         type: string
         required: true
-      - name: formMessageLabel
-        label: Form Message Label
-        type: string
-        required: true
-      - name: submitButtonLabel
-        label: Submit Button Label
+      - name: responseHint
+        label: Response Hint
         type: string
         required: true
       - name: body

@@ -3,9 +3,9 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   site: "https://ying98012.github.io",
-  base: command === "dev" ? "/" : "/website",
+  base: "/website",
   integrations: [react(), tailwind(), sitemap()],
   output: "static",
-}));
+});

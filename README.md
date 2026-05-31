@@ -38,11 +38,8 @@ npm run build
 .
 ├── .github/workflows/deploy.yml
 ├── admin/
+│   ├── config.yml              # Pages CMS schema（相容配置）
 │   └── index.html              # 舊版入口，自動轉跳至 /admin/
-├── oauth-proxy/                # GitHub OAuth Cloudflare Worker
-│   ├── src/worker.ts
-│   ├── wrangler.toml
-│   └── README.md
 ├── public/
 │   ├── robots.txt
 │   └── uploads/
@@ -52,77 +49,42 @@ npm run build
 │   │   ├── config.ts
 │   │   └── projects/
 │   ├── layouts/
-│   ├── lib/
-│   │   └── auth.ts             # 前端 OAuth 客戶端工具
 │   ├── pages/
-│   │   ├── admin/
-│   │   │   ├── index.astro     # 登入入口
-│   │   │   └── callback.astro  # OAuth 授權碼回呼處理
-│   │   ├── admin-dashboard.astro
+│   │   ├── admin/index.astro   # Pages CMS 管理入口說明
 │   │   ├── contact.astro
 │   │   ├── experience.astro
 │   │   ├── index.astro
 │   │   ├── projects/[slug].astro
 │   │   └── stack.astro
 │   └── styles/global.css
+├── .pages.yml                  # Pages CMS 主設定
 ├── astro.config.mjs
 ├── tailwind.config.mjs
 ├── tsconfig.json
 └── package.json
 ```
 
-## 管理後台 GitHub OAuth 2.0 登入
+## 內容管理（Pages CMS）
 
-管理後台 (`/admin/`) 已啟用 GitHub OAuth 2.0 登入。由於 GitHub Pages 為純靜態，token 交換採用獨立的 Cloudflare Worker（位於 `oauth-proxy/`）作為伺服端代理。
+本專案已改為 **Pages CMS** 作為唯一後台內容管理方式。
 
-### 啟用步驟
+管理入口：`/admin/`
 
-1. **建立 GitHub OAuth App**
-   - GitHub → Settings → Developer settings → OAuth Apps → **New OAuth App**
-   - GitHub OAuth App 的 Authorization callback URL 只能填一個，正式環境請填：
-     - `https://ying98012.github.io/website/admin/callback/`
-   - 若要本機開發，請建立第二個 OAuth App，callback 填：
-     - `http://localhost:4321/admin/callback/`
-   - 記下 **Client ID**，並 Generate **Client Secret**。
+### 使用流程
 
-2. **部署 OAuth Proxy（Cloudflare Worker）**
+1. 前往 [pagescms.org](https://pagescms.org/) 並使用 GitHub 登入。
+2. 確保已安裝 Pages CMS GitHub App，且本 repo (`ying98012/website`) 有寫入權限。
+3. 開啟 repo 後，Pages CMS 會讀取根目錄 `.pages.yml`（及 `admin/config.yml` 相容配置）。
+4. 編輯並儲存內容後，變更會直接提交到 GitHub，再由 GitHub Actions 自動部署。
 
-   ```bash
-   cd oauth-proxy
-   npm install
-   npx wrangler login
-   npx wrangler secret put GITHUB_CLIENT_ID
-   npx wrangler secret put GITHUB_CLIENT_SECRET
-   npm run deploy
-   ```
+### 設定檔重點
 
-   - 編輯 `oauth-proxy/wrangler.toml` 的 `ALLOWED_ORIGINS`（站台域名 + dev origin）與 `ALLOWED_LOGINS`（允許登入的 GitHub 帳號）。
-   - 詳細說明見 `oauth-proxy/README.md`。
+- `.pages.yml`：Pages CMS 主設定，定義 collections、欄位、媒體路徑。
+- `admin/config.yml`：保留相容配置，內容與 `.pages.yml` 同步。
 
-3. **設定前端環境變數**
-
-   複製 `.env.example` 為 `.env` 並填入：
-
-   ```bash
-   PUBLIC_OAUTH_CLIENT_ID=<從 OAuth App 取得的 Client ID>
-   PUBLIC_OAUTH_PROXY_URL=https://weiying-portfolio-oauth.<account>.workers.dev
-   PUBLIC_OAUTH_SCOPE=public_repo read:user
-   PUBLIC_OAUTH_ALLOWED_LOGINS=ying98012
-   ```
-
-   - GitHub Pages 部署時，於 GitHub repo 的 **Settings → Secrets and variables → Actions → Variables** 設定相同的 `PUBLIC_OAUTH_*` 變數，並在 `.github/workflows/deploy.yml` 的 build 步驟以 `env:` 注入。
-
-### 安全模型
-
-- `GITHUB_CLIENT_SECRET` 只存在 Cloudflare Worker secret，前端永遠看不到。
-- 前端登入流程使用 `state` 參數防 CSRF。
-- access token 僅放在 `sessionStorage`，分頁關閉立即失效。
-- Worker 取得 token 後立刻以 `GET /user` 驗證 GitHub 帳號是否在 `ALLOWED_LOGINS` 白名單；不在白名單則立刻撤銷 token 並回 403。
-- 登出時前端會呼叫 Worker `/revoke` 來確實撤銷該 token。
-
-## 部署注意事項
+## 部署注意事項（GitHub Pages）
 
 - `astro.config.mjs` 目前使用：
   - `site: https://ying98012.github.io`
   - `base: /website`
-- 若 repository 名稱或 GitHub 帳號不同，請同步調整上述值，並更新 OAuth App 的 callback URL 與 `oauth-proxy/wrangler.toml` 的 `ALLOWED_ORIGINS`。
+- 若 repository 名稱或 GitHub 帳號不同，請同步調整上述值。

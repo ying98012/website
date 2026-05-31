@@ -2,208 +2,52 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const base = import.meta.env.BASE_URL;
-const trimmedBase = base.replace(/\/$/, "");
-const dashboardUrl = `${trimmedBase}/admin-dashboard/`;
-const repoContentUrl = "https://github.com/ying98012/website/tree/main/src/content/projects";
-const editablePages = [
-  { label: "首頁", path: "src/pages/index.astro" },
-  { label: "經歷頁", path: "src/pages/experience.astro" },
-  { label: "技術棧頁", path: "src/pages/stack.astro" },
-  { label: "聯絡我頁", path: "src/pages/contact.astro" },
-  { label: "管理入口頁", path: "src/pages/admin/index.astro" }
-];
-const repoEditPrefix = "https://github.com/ying98012/website/edit/main/";
-
-const oauthClientId = (import.meta.env.PUBLIC_OAUTH_CLIENT_ID ?? "").toString().trim();
-const oauthProxyUrl = (import.meta.env.PUBLIC_OAUTH_PROXY_URL ?? "").toString().trim();
-const oauthConfigured = Boolean(oauthClientId && oauthProxyUrl);
+const pagesCmsUrl = "https://pagescms.org";
+const repoUrl = "https://github.com/ying98012/website";
 ---
 
-<BaseLayout title="管理後台入口" disableMainWrapper={true}>
+<BaseLayout title="Pages CMS 管理入口" disableMainWrapper={true}>
   <div class="grid min-h-screen place-items-center px-6 py-12">
-    <section class="glass-panel w-full max-w-2xl space-y-5 rounded-xl p-6" data-base={trimmedBase} data-dashboard={dashboardUrl}>
+    <section class="glass-panel w-full max-w-2xl space-y-5 rounded-xl p-6">
       <header class="space-y-2">
-        <h1 class="text-2xl font-bold">管理後台入口</h1>
+        <h1 class="text-2xl font-bold">Pages CMS 管理入口</h1>
         <p class="text-sm text-on-surface-variant">
-          本後台採用 GitHub OAuth 2.0 登入，登入後即可使用本地草稿工具與頁面編輯功能。
+          目前網站內容採用 Pages CMS。請從下方連結登入 GitHub 後，選擇本 repo 即可編輯 `src/content/**` 內容。
         </p>
       </header>
 
-      {!oauthConfigured && (
-        <div class="rounded-lg border border-error/40 bg-error/10 p-4 text-xs text-error">
-          OAuth 尚未設定：請在環境變數中提供 <code>PUBLIC_OAUTH_CLIENT_ID</code> 與 <code>PUBLIC_OAUTH_PROXY_URL</code>。詳見根目錄 <code>README.md</code> 與 <code>oauth-proxy/README.md</code>。
-        </div>
-      )}
-
-      <section id="auth-login-card" class="space-y-4 rounded-lg border border-outline-variant/30 bg-surface-container-low p-5">
-        <div class="space-y-2">
-          <h2 class="text-base font-bold">尚未登入</h2>
-          <p class="text-sm text-on-surface-variant">
-            點擊下方按鈕以 GitHub 帳號登入。系統僅允許白名單帳號通過驗證。
-          </p>
-        </div>
-        <button
-          id="login-button"
-          type="button"
-          class="btn-secondary inline-flex items-center gap-2 rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={!oauthConfigured}
-        >
-          <span class="material-symbols-outlined text-[18px]">login</span>
-          使用 GitHub 登入
-        </button>
-        <p id="login-error" class="hidden text-xs text-error"></p>
-      </section>
-
-      <section id="auth-logged-in-card" class="hidden space-y-4 rounded-lg border border-outline-variant/30 bg-surface-container-low p-5">
-        <div class="flex items-center gap-4">
-          <img id="auth-avatar" alt="" class="h-12 w-12 rounded-full border border-outline-variant/30" />
-          <div class="flex-1">
-            <p class="text-xs uppercase tracking-widest text-on-surface-variant">已登入</p>
-            <p id="auth-username" class="text-base font-bold text-on-surface"></p>
-            <p id="auth-login" class="font-code-sm text-code-sm text-secondary"></p>
-          </div>
-        </div>
-        <ol class="list-decimal space-y-2 pl-5 text-sm text-on-surface-variant">
-          <li>進入「管理主控台」可使用本地草稿工具與專案管理。</li>
-          <li>所有實際內容更新都會透過你的 GitHub 帳號權限執行。</li>
-          <li>關閉分頁即會自動登出（access token 僅存於 sessionStorage）。</li>
+      <div class="rounded-lg border border-outline-variant/30 bg-surface-container-low p-5 text-sm text-on-surface-variant">
+        <ol class="list-decimal space-y-2 pl-5">
+          <li>先確認 GitHub 已安裝 Pages CMS App，且對本 repo 有寫入權限。</li>
+          <li>進入 Pages CMS，選擇 <code>ying98012/website</code>。</li>
+          <li>在 UI 修改內容並儲存後，變更會直接提交到 GitHub。</li>
         </ol>
-        <div class="flex flex-wrap gap-3 pt-2">
-          <a
-            id="enter-dashboard"
-            class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
-            href={dashboardUrl}
-          >
-            進入管理主控台
-          </a>
-          <a
-            class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
-            href={repoContentUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub 內容目錄
-          </a>
-          <button
-            id="logout-button"
-            type="button"
-            class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
-          >
-            登出
-          </button>
-        </div>
-      </section>
+      </div>
 
-      <section class="space-y-3 rounded-lg border border-outline-variant/30 bg-surface-container-low p-4">
-        <h2 class="text-sm font-bold text-on-surface">頁面檔案編輯（直接到 GitHub）</h2>
-        <div class="grid gap-2">
-          {
-            editablePages.map((item) => (
-              <a
-                class="btn-secondary block rounded px-4 py-2 text-left text-xs"
-                href={`${repoEditPrefix}${item.path}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {item.label}：{item.path}
-              </a>
-            ))
-          }
-        </div>
-      </section>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a
+          class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={pagesCmsUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          開啟 Pages CMS
+        </a>
+        <a
+          class="btn-secondary rounded px-5 py-3 font-label-caps text-label-caps uppercase tracking-widest"
+          href={repoUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          開啟 GitHub Repo
+        </a>
+      </div>
 
       <div class="rounded-lg border border-outline-variant/30 bg-surface-container-low p-4 text-xs text-on-surface-variant">
-        安全提醒：登入採用 GitHub OAuth 2.0，client secret 僅存於 Cloudflare Worker；登入完成後僅該 GitHub 帳號可看到管理主控台內容。
+        專案設定檔位於根目錄 <code>.pages.yml</code>，並提供 <code>admin/config.yml</code> 供相容流程使用。
       </div>
 
       <a class="block text-center text-sm text-secondary underline underline-offset-4" href={base}>回到首頁</a>
     </section>
   </div>
 </BaseLayout>
-
-<script>
-  import {
-    getStoredUser,
-    isOAuthConfigured,
-    loadOAuthConfig,
-    revokeStoredToken,
-    startLogin
-  } from "@/lib/auth";
-
-  const loginCard = document.getElementById("auth-login-card");
-  const loggedInCard = document.getElementById("auth-logged-in-card");
-  const loginButton = document.getElementById("login-button") as HTMLButtonElement | null;
-  const logoutButton = document.getElementById("logout-button");
-  const loginError = document.getElementById("login-error");
-  const avatar = document.getElementById("auth-avatar") as HTMLImageElement | null;
-  const usernameEl = document.getElementById("auth-username");
-  const loginEl = document.getElementById("auth-login");
-  const enterDashboard = document.getElementById("enter-dashboard") as HTMLAnchorElement | null;
-
-  function show(el: HTMLElement | null): void {
-    el?.classList.remove("hidden");
-  }
-  function hide(el: HTMLElement | null): void {
-    el?.classList.add("hidden");
-  }
-
-  function setError(message: string | null): void {
-    if (!loginError) return;
-    if (!message) {
-      loginError.textContent = "";
-      hide(loginError);
-      return;
-    }
-    loginError.textContent = message;
-    show(loginError);
-  }
-
-  function render(): void {
-    const user = getStoredUser();
-    if (user) {
-      hide(loginCard);
-      show(loggedInCard);
-      if (avatar) {
-        avatar.src = user.avatarUrl ?? "";
-        avatar.alt = user.login;
-      }
-      if (usernameEl) usernameEl.textContent = user.name ?? user.login;
-      if (loginEl) loginEl.textContent = `@${user.login}`;
-    } else {
-      show(loginCard);
-      hide(loggedInCard);
-    }
-  }
-
-  loginButton?.addEventListener("click", () => {
-    setError(null);
-    try {
-      if (!isOAuthConfigured(loadOAuthConfig())) {
-        setError("OAuth 尚未設定，無法啟動登入流程。");
-        return;
-      }
-      const dashboard = document
-        .querySelector<HTMLElement>("[data-dashboard]")
-        ?.dataset.dashboard;
-      startLogin(dashboard ?? undefined);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "登入啟動失敗";
-      setError(message);
-    }
-  });
-
-  logoutButton?.addEventListener("click", async () => {
-    await revokeStoredToken();
-    render();
-  });
-
-  enterDashboard?.addEventListener("click", (event) => {
-    if (!getStoredUser()) {
-      event.preventDefault();
-      setError("尚未登入，請先以 GitHub 登入。");
-      render();
-    }
-  });
-
-  render();
-</script>

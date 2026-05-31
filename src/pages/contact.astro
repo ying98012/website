@@ -15,49 +15,59 @@ if (!contactPage) {
   <div class="min-h-screen pt-20">
     <TopNav active="contact" />
 
-    <main class="mx-auto max-w-container-max px-margin-mobile py-section-gap md:px-margin-desktop">
-      <div class="grid grid-cols-1 items-start gap-stack-lg md:grid-cols-2">
-        <div>
+    <main class="mx-auto flex w-full max-w-container-max flex-grow items-center justify-center px-margin-mobile pb-section-gap pt-[120px] md:px-margin-desktop">
+      <section class="glass-panel w-full max-w-4xl rounded-2xl p-stack-lg md:p-section-gap">
+        <header class="text-center">
           <h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
-            {contactPage.data.titlePrefix}{" "}
-            <span class="bg-gradient-to-r from-brand-blue to-brand-purple bg-clip-text text-transparent">
-              {contactPage.data.titleHighlight}
-            </span>
+            {contactPage.data.title}
           </h1>
-          <p class="mt-4 max-w-md font-body-md text-body-md text-on-surface-variant">
+          <p class="mx-auto mt-4 max-w-2xl font-body-md text-body-md text-on-surface-variant">
             {contactPage.data.pageDescription}
           </p>
-          <div class="mt-6 flex flex-wrap gap-3 font-code-sm text-code-sm">
-            {
-              contactPage.data.socialLinks.map((link) => (
-                <a class="btn-secondary rounded px-4 py-2" href={link.url} target="_blank" rel="noreferrer">
-                  {link.label}
-                </a>
-              ))
-            }
-          </div>
+        </header>
+
+        <div class="mt-stack-lg grid grid-cols-1 gap-gutter md:grid-cols-[0.9fr_1.1fr]">
+          <article class="rounded-xl border border-outline-variant/20 bg-surface-container-low p-stack-md">
+            <p class="font-label-caps text-label-caps text-secondary">社群連結</p>
+            <div class="mt-4 flex gap-4">
+              {
+                contactPage.data.socialLinks.map((link) => (
+                  <a
+                    class="flex h-12 w-12 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition-all duration-300 hover:border-secondary hover:shadow-[0_0_15px_rgba(0,212,255,0.3)]"
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={link.label}
+                  >
+                    {link.label === "GitHub" ? (
+                      <svg
+                        aria-hidden="true"
+                        class="h-6 w-6 fill-current text-on-surface"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.76 2.67 1.25 3.32.95.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.26 1.17-3.06-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.63 1.59.24 2.76.12 3.05.73.8 1.17 1.81 1.17 3.06 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.08.77 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.68.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                      </svg>
+                    ) : (
+                      <span class="material-symbols-outlined text-on-surface">work</span>
+                    )}
+                  </a>
+                ))
+              }
+            </div>
+          </article>
+
+          <article class="rounded-xl border border-outline-variant/20 bg-surface-container-low p-stack-md">
+            <p class="font-label-caps text-label-caps text-secondary">{contactPage.data.contactEmailLabel}</p>
+            <p class="mt-4 overflow-x-auto whitespace-nowrap font-code-sm text-code-sm text-on-surface">{contactPage.data.contactEmail}</p>
+            <p class="mt-3 font-body-sm text-body-sm text-on-surface-variant">{contactPage.data.responseHint}</p>
+          </article>
         </div>
 
-        <form class="glass-panel rounded-xl p-stack-md">
-          <div class="space-y-4">
-            <label class="block font-label-caps text-label-caps text-on-surface-variant">
-              {contactPage.data.formNameLabel}
-              <input class="cms-input mt-2 w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" type="text" placeholder="王小明" />
-            </label>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant">
-              {contactPage.data.formEmailLabel}
-              <input class="cms-input mt-2 w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" type="email" placeholder="you@example.com" />
-            </label>
-            <label class="block font-label-caps text-label-caps text-on-surface-variant">
-              {contactPage.data.formMessageLabel}
-              <textarea class="cms-input mt-2 min-h-[140px] w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="輸入你的合作想法..."></textarea>
-            </label>
-          </div>
-          <button type="button" class="btn-primary mt-6 w-full rounded px-6 py-3 font-label-caps text-label-caps uppercase tracking-widest">
-            {contactPage.data.submitButtonLabel}
-          </button>
-        </form>
-      </div>
+        <div class="mt-stack-lg opacity-40">
+          <div class="h-px w-full bg-gradient-to-r from-secondary via-secondary/30 to-transparent"></div>
+          <div class="mt-2 text-center font-code-sm text-code-sm text-secondary">// SYSTEM.CONNECTION.READY</div>
+        </div>
+      </section>
     </main>
 
     <SiteFooter />

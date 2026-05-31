@@ -58,6 +58,7 @@ const stackPage = defineCollection({
       }),
     ),
     tools: z.array(z.string()),
+    foundations: z.array(z.string()).default([]),
     focusLabel: z.string(),
     focusDescription: z.string(),
   }),
@@ -66,8 +67,7 @@ const stackPage = defineCollection({
 const contactPage = defineCollection({
   type: "content",
   schema: z.object({
-    titlePrefix: z.string(),
-    titleHighlight: z.string(),
+    title: z.string(),
     pageDescription: z.string(),
     socialLinks: z.array(
       z.object({
@@ -75,10 +75,9 @@ const contactPage = defineCollection({
         url: z.string(),
       }),
     ),
-    formNameLabel: z.string(),
-    formEmailLabel: z.string(),
-    formMessageLabel: z.string(),
-    submitButtonLabel: z.string(),
+    contactEmailLabel: z.string(),
+    contactEmail: z.string(),
+    responseHint: z.string(),
   }),
 });
 

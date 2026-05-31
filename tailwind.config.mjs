@@ -121,6 +121,7 @@ export default {
       },
       maxWidth: {
         container: "1280px",
+        "container-max": "1280px",
       },
       spacing: {
         base: "8px",

@@ -8,6 +8,11 @@ const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
 const homePage = await getEntry("home-page", "content");
+const base = import.meta.env.BASE_URL;
+const baseWithSlash = base.endsWith("/") ? base : `${base}/`;
+const toProjectPath = (slug: string) => `${baseWithSlash}projects/${slug}/`;
+const toAssetPath = (path: string) =>
+  path.startsWith("/") ? `${baseWithSlash}${path.slice(1)}` : path;
 
 if (!homePage) {
   throw new Error("Missing home page content: src/content/home-page/content.md");
@@ -19,20 +24,20 @@ if (!homePage) {
   description="個人網站作品集首頁"
   disableMainWrapper={true}
 >
-  <div class="min-h-screen pt-20">
+  <div class="flex min-h-screen flex-col pt-20">
     <TopNav active="projects" />
 
     <main class="flex-grow">
       <section
         class="mx-auto flex max-w-container-max flex-col items-center px-margin-mobile py-section-gap text-center md:px-margin-desktop"
       >
-        <h1 class="mb-stack-md font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
+        <h1 class="mb-stack-md max-w-4xl font-display-lg-mobile text-display-lg-mobile leading-tight tracking-tight md:font-display-lg md:text-display-lg">
           {homePage.data.heroTitle}
         </h1>
-        <p class="mb-stack-lg max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+        <p class="mb-stack-lg max-w-3xl font-body-lg text-body-lg leading-relaxed text-on-surface-variant">
           {homePage.data.heroDescription}
         </p>
-        <div class="flex gap-gutter">
+        <div class="flex flex-wrap items-center justify-center gap-gutter">
           <a
             class="btn-primary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
             href={homePage.data.primaryButtonUrl}
@@ -55,7 +60,7 @@ if (!homePage) {
       </section>
 
       <section id="projects" class="mx-auto max-w-container-max px-margin-mobile pb-section-gap md:px-margin-desktop">
-        <header class="mb-stack-lg flex items-end justify-between gap-3 border-b border-outline-variant/10 pb-stack-sm">
+        <header class="mb-stack-lg border-b border-outline-variant/10 pb-stack-sm">
           <div>
             <h2 class="font-headline-md text-headline-md text-on-surface">{homePage.data.projectsTitle}</h2>
             <p class="font-body-md text-body-md text-on-surface-variant">{homePage.data.projectsDescription}</p>
@@ -64,12 +69,12 @@ if (!homePage) {
         <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3">
           {
             projects.map((project) => (
-              <article class="glass-panel glass-panel-hover group flex flex-col transition-all duration-300">
+              <article class="glass-panel glass-panel-hover group flex h-full w-full flex-col overflow-hidden transition-all duration-300">
                 <div class="relative aspect-video w-full overflow-hidden bg-surface-container-highest">
                   <img
                     alt={project.data.title}
                     class="h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-100"
-                    src={project.data.coverImage}
+                    src={toAssetPath(project.data.coverImage)}
                   />
                 </div>
                 <div class="flex flex-grow flex-col justify-between p-stack-md">
@@ -87,7 +92,7 @@ if (!homePage) {
                   </div>
                   <a
                     class="flex w-fit items-center gap-1 font-code-sm text-code-sm text-brand-purple transition-colors duration-300 hover:text-brand-blue"
-                    href={`/projects/${project.slug}/`}
+                    href={toProjectPath(project.slug)}
                   >
                     <span class="material-symbols-outlined text-sm">description</span>
                     View README.md 文檔

@@ -36,4 +36,4 @@ timeline:
       - AWS
 ---
 
-經歷頁內容由 CMS 維護。
+經歷頁內容由 Pages CMS 維護。
