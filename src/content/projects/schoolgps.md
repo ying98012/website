@@ -10,6 +10,7 @@ techStack:
   - Gemini
   - Room
 coverImage: /uploads/專題圖片/Screenshot_20260725_164637.jpg
+coverAspect: portrait
 screenshots:
   - /uploads/專題圖片/Screenshot_20260725_164637.jpg
   - /uploads/專題圖片/Screenshot_20260725_164656.jpg

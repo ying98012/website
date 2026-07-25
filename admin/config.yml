@@ -35,10 +35,25 @@ content:
         label: Cover Image
         type: image
         required: true
+      - name: coverAspect
+        label: Cover Aspect
+        type: select
+        default: square
+        options:
+          values:
+            - label: 正方形
+              value: square
+            - label: 直式
+              value: portrait
+            - label: 橫式
+              value: landscape
       - name: screenshots
         label: Screenshots
         type: image
-        list: true
+        options:
+          multiple:
+            max: 20
+          unique: true
       - name: videoUrl
         label: Video URL
         type: string

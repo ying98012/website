@@ -113,7 +113,8 @@ npm run build
    - `Cover Image`：封面圖（上傳後會放到 `public/uploads/`）
    - `Published At`：發布日期（列表依此由新到舊排序）
 4. 選填：
-   - `Screenshots`：作品截圖多圖（詳情頁橫向展示；可不上傳）
+   - `Cover Aspect`：封面顯示比例，可選 正方形／直式／橫式（未選為正方形）
+   - `Screenshots`：作品截圖，可一次多選上傳（詳情頁橫向展示；可不上傳）
    - `README URLs`：可新增多筆「標籤 + 網址」（例如 README 展示頁、Demo），不填則詳情頁不顯示連結按鈕
    - `Video URL`、正文 `Content`（詳情頁內文）、`Featured`（是否上首頁精選）
 5. Save 後會新增 `src/content/projects/<slug>.md`，並觸發部署。

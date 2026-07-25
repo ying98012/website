@@ -12,10 +12,20 @@ const projectUrl = `${baseWithSlash}projects/${project.slug}/`;
 const coverImageUrl = project.data.coverImage.startsWith("/")
   ? `${baseWithSlash}${project.data.coverImage.slice(1)}`
   : project.data.coverImage;
+const coverAspectClass = {
+  square: "aspect-square",
+  portrait: "aspect-[3/4]",
+  landscape: "aspect-video",
+}[project.data.coverAspect];
 ---
 
 <article class="glass-panel glass-panel-hover group flex h-full w-full flex-col overflow-hidden transition-all duration-300">
-  <div class="relative aspect-video w-full overflow-hidden bg-surface-container-highest">
+  <div
+    class:list={[
+      "relative w-full overflow-hidden bg-surface-container-highest",
+      coverAspectClass,
+    ]}
+  >
     <img
       alt={project.data.title}
       class="h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-100"

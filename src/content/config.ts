@@ -8,6 +8,7 @@ const projects = defineCollection({
     summary: z.string(),
     techStack: z.array(z.string()).min(1),
     coverImage: z.string(),
+    coverAspect: z.enum(["square", "portrait", "landscape"]).default("square"),
     screenshots: z.array(z.string()).optional().default([]),
     videoUrl: z.string().url().optional(),
     readmeUrls: z
