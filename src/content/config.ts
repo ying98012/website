@@ -69,8 +69,6 @@ const stackPage = defineCollection({
     ),
     tools: z.array(z.string()),
     foundations: z.array(z.string()).default([]),
-    focusLabel: z.string(),
-    focusDescription: z.string(),
   }),
 });
 

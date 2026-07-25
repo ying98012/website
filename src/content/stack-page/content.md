@@ -24,8 +24,5 @@ foundations:
   - Data Structures
   - Algorithms
   - Design Patterns
-focusLabel: Current Focus
-focusDescription: Exploring WebGL and Shader programming for high-performance
-  interactive experiences.
 ---
 技術棧頁內容由 Pages CMS 維護。

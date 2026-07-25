@@ -203,14 +203,6 @@ content:
         type: string
         list: true
         required: true
-      - name: focusLabel
-        label: Focus Label
-        type: string
-        required: true
-      - name: focusDescription
-        label: Focus Description
-        type: text
-        required: true
       - name: body
         label: Notes
         type: rich-text
