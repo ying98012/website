@@ -18,6 +18,8 @@ tools:
   - Cursor
   - Docker
   - MCP
+  - Gemini
+  - google stitch
 foundations:
   - Data Structures
   - Algorithms
