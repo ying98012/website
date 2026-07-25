@@ -3,7 +3,7 @@ pageTitle: 專業經歷
 pageDescription: 在複雜技術環境中持續交付高效能系統與互動體驗的工程歷程。
 timeline:
   - period: 2025 - 2026
-    role: Android 應用開發者（學士畢業專題）
+    role: （學士畢業專題）
     company: 國立勤益科技大學｜資訊工程系
     highlights:
       - 以 Kotlin + Jetpack Compose 打造校園室內導航 App，涵蓋工程館 B1～7F 共 8 樓，解決 GPS
