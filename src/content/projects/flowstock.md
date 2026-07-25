@@ -11,7 +11,7 @@ techStack:
   - Cloudflare Workers
   - Firebase Analytics
 coverImage: /uploads/flowstock/Frame 811.png
-coverAspect: portrait
+coverAspect: square
 screenshots:
   - /uploads/flowstock/Frame 804.png
   - /uploads/flowstock/Frame 812.png
