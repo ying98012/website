@@ -2,3 +2,4 @@ node_modules
 dist
 .astro
 stitch_modern_developer_portfolio_cms
+src/content/**/*.md
