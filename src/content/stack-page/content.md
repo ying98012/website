@@ -3,9 +3,9 @@ pageTitle: 技術棧
 pageDescription: 核心能力與工具生態系
 coreSkills:
   - name: Android SDK
-    level: 60
-  - name: Kotlin
     level: 50
+  - name: Kotlin
+    level: 40
   - name: Unity
     level: 80
   - name: C#
