@@ -8,8 +8,17 @@ const projects = defineCollection({
     summary: z.string(),
     techStack: z.array(z.string()).min(1),
     coverImage: z.string(),
+    screenshots: z.array(z.string()).optional().default([]),
     videoUrl: z.string().url().optional(),
-    githubUrl: z.string().url(),
+    readmeUrls: z
+      .array(
+        z.object({
+          label: z.string(),
+          url: z.string().url(),
+        }),
+      )
+      .optional()
+      .default([]),
     featured: z.boolean().default(false),
     publishedAt: z.coerce.date(),
   }),

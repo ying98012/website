@@ -10,8 +10,12 @@ techStack:
   - Gemini
   - Room
 coverImage: /uploads/專題圖片/Screenshot_20260725_164637.jpg
+screenshots:
+  - /uploads/專題圖片/Screenshot_20260725_164637.jpg
 videoUrl: https://youtu.be/oAL-C9KxIZs
-githubUrl: https://ying98012.github.io/portfolio-readmes/%E6%A0%A1%E5%9C%92%E6%99%BA%E6%85%A7%E8%81%8A%E5%A4%A9%E5%8A%A9%E6%89%8B/
+readmeUrls:
+  - label: README 展示頁
+    url: https://ying98012.github.io/portfolio-readmes/%E6%A0%A1%E5%9C%92%E6%99%BA%E6%85%A7%E8%81%8A%E5%A4%A9%E5%8A%A9%E6%89%8B/
 featured: true
 publishedAt: 2026-07-25
 ---

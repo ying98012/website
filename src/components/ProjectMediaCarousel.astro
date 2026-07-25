@@ -1,0 +1,147 @@
+---
+import ProjectVideoEmbed from "@/components/ProjectVideoEmbed.astro";
+
+interface Props {
+  title: string;
+  videoUrl?: string;
+  screenshots: string[];
+  baseWithSlash: string;
+}
+
+const { title, videoUrl, screenshots, baseWithSlash } = Astro.props;
+
+const toAssetUrl = (path: string) =>
+  path.startsWith("/") ? `${baseWithSlash}${path.slice(1)}` : path;
+
+const screenshotUrls = screenshots.map(toAssetUrl);
+const hasMedia = Boolean(videoUrl) || screenshotUrls.length > 0;
+---
+
+{
+  hasMedia && (
+    <section class="flex flex-col gap-stack-sm" aria-label="專案媒體">
+      <h2 class="font-label-caps text-label-caps text-tertiary">預覽</h2>
+      <div
+        class="project-media-carousel -mx-margin-mobile flex gap-4 overflow-x-auto px-margin-mobile pb-2 scroll-smooth md:-mx-0 md:px-0"
+        style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;"
+      >
+        {videoUrl && (
+          <div
+            class="project-media-item relative h-[280px] w-[min(86vw,480px)] shrink-0 overflow-hidden rounded-2xl border border-outline-variant md:h-[360px] md:w-[640px]"
+            style="scroll-snap-align: start;"
+          >
+            <ProjectVideoEmbed url={videoUrl} title={`${title} 示範影片`} />
+          </div>
+        )}
+
+        {screenshotUrls.map((src, index) => (
+          <button
+            type="button"
+            class="project-screenshot group relative h-[280px] w-[min(42vw,200px)] shrink-0 overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-highest transition-transform duration-300 hover:scale-[1.02] hover:border-secondary md:h-[360px] md:w-[200px]"
+            style="scroll-snap-align: start;"
+            data-lightbox-src={src}
+            data-lightbox-alt={`${title} 截圖 ${index + 1}`}
+            aria-label={`放大檢視截圖 ${index + 1}`}
+          >
+            <img
+              src={src}
+              alt={`${title} 截圖 ${index + 1}`}
+              class="h-full w-full object-cover object-top transition-opacity duration-300 group-hover:opacity-95"
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
+
+      <div
+        id="project-lightbox"
+        class="project-lightbox fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 p-4 opacity-0 transition-opacity duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-label="截圖預覽"
+        hidden
+      >
+        <button
+          type="button"
+          class="absolute inset-0 cursor-zoom-out"
+          data-lightbox-close
+          aria-label="關閉預覽"
+        />
+        <img
+          id="project-lightbox-image"
+          src=""
+          alt=""
+          class="relative z-10 max-h-[90vh] max-w-[min(96vw,1100px)] rounded-xl object-contain shadow-glass"
+        />
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const lightbox = document.getElementById("project-lightbox");
+  const lightboxImage = document.getElementById(
+    "project-lightbox-image",
+  ) as HTMLImageElement | null;
+
+  if (lightbox && lightboxImage) {
+    const openLightbox = (src: string, alt: string) => {
+      lightboxImage.src = src;
+      lightboxImage.alt = alt;
+      lightbox.hidden = false;
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+      requestAnimationFrame(() => {
+        lightbox.classList.remove("opacity-0");
+        lightbox.classList.add("opacity-100");
+      });
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove("opacity-100");
+      lightbox.classList.add("opacity-0");
+      window.setTimeout(() => {
+        lightbox.classList.add("hidden");
+        lightbox.classList.remove("flex");
+        lightbox.hidden = true;
+        lightboxImage.src = "";
+        document.body.style.overflow = "";
+      }, 200);
+    };
+
+    document.querySelectorAll<HTMLButtonElement>(".project-screenshot").forEach((button) => {
+      button.addEventListener("click", () => {
+        const src = button.dataset.lightboxSrc;
+        const alt = button.dataset.lightboxAlt || "專案截圖";
+        if (src) openLightbox(src, alt);
+      });
+    });
+
+    lightbox.querySelectorAll("[data-lightbox-close]").forEach((el) => {
+      el.addEventListener("click", closeLightbox);
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !lightbox.hidden) {
+        closeLightbox();
+      }
+    });
+  }
+</script>
+
+<style>
+  .project-media-carousel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 210, 253, 0.45) transparent;
+  }
+
+  .project-media-carousel::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .project-media-carousel::-webkit-scrollbar-thumb {
+    background: rgba(0, 210, 253, 0.45);
+    border-radius: 999px;
+  }
+</style>

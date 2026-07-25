@@ -35,13 +35,26 @@ content:
         label: Cover Image
         type: image
         required: true
+      - name: screenshots
+        label: Screenshots
+        type: image
+        list: true
       - name: videoUrl
         label: Video URL
         type: string
-      - name: githubUrl
-        label: GitHub URL
-        type: string
-        required: true
+      - name: readmeUrls
+        label: README URLs
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Label
+            type: string
+            required: true
+          - name: url
+            label: URL
+            type: string
+            required: true
       - name: featured
         label: Featured
         type: boolean

@@ -1,0 +1,55 @@
+---
+interface Props {
+  url: string;
+  title?: string;
+}
+
+const { url, title = "專案示範影片" } = Astro.props;
+
+const toEmbedUrl = (rawUrl: string): string | undefined => {
+  try {
+    if (rawUrl.includes("youtube.com/watch?v=")) {
+      const id = new URL(rawUrl).searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : undefined;
+    }
+    if (rawUrl.includes("youtu.be/")) {
+      const id = rawUrl.split("/").pop()?.split("?")[0];
+      return id ? `https://www.youtube.com/embed/${id}` : undefined;
+    }
+    if (rawUrl.includes("vimeo.com/")) {
+      const id = rawUrl.split("/").pop()?.split("?")[0];
+      return id ? `https://player.vimeo.com/video/${id}` : undefined;
+    }
+  } catch {
+    return undefined;
+  }
+  return undefined;
+};
+
+const embedUrl = toEmbedUrl(url);
+---
+
+{
+  embedUrl ? (
+    <div class="h-full w-full overflow-hidden rounded-2xl bg-surface-container-highest">
+      <iframe
+        class="h-full w-full"
+        src={embedUrl}
+        title={title}
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      />
+    </div>
+  ) : (
+    <a
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      class="flex h-full w-full flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-high transition-colors duration-300 hover:border-tertiary"
+    >
+      <span class="material-symbols-outlined text-5xl text-tertiary">play_circle</span>
+      <span class="font-body-md text-body-md text-on-surface">開啟外部影片</span>
+    </a>
+  )
+}

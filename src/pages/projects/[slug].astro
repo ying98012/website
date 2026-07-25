@@ -2,11 +2,12 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
+import ProjectMediaCarousel from "@/components/ProjectMediaCarousel.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
   return projects.map((project) => ({
-    params: { slug: project.slug }
+    params: { slug: project.slug },
   }));
 }
 
@@ -26,12 +27,14 @@ if (!project) {
 const { Content } = await project.render();
 const publishedAt = project.data.publishedAt.toLocaleDateString("zh-TW", {
   year: "numeric",
-  month: "long"
+  month: "long",
 });
 const homeUrl = baseWithSlash;
 const coverImageUrl = project.data.coverImage.startsWith("/")
   ? `${baseWithSlash}${project.data.coverImage.slice(1)}`
   : project.data.coverImage;
+const readmeUrls = project.data.readmeUrls;
+const primaryCta = readmeUrls[0];
 ---
 
 <BaseLayout
@@ -42,12 +45,14 @@ const coverImageUrl = project.data.coverImage.startsWith("/")
   <div class="flex min-h-screen flex-col">
     <header class="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-background/80 backdrop-blur-md">
       <div
-        class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop"
+        class="mx-auto flex h-16 max-w-container-max items-center justify-between px-margin-mobile md:h-20 md:px-margin-desktop"
       >
-        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">個人網站</div>
+        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
+          個人網站
+        </div>
         <div class="font-body-md text-body-md">
           <a
-            class="flex items-center gap-2 text-secondary transition-transform duration-300 hover:text-on-surface-variant"
+            class="flex items-center gap-2 text-secondary transition-colors duration-300 hover:text-on-surface-variant"
             href={homeUrl}
           >
             <span class="material-symbols-outlined">arrow_back</span>
@@ -57,78 +62,85 @@ const coverImageUrl = project.data.coverImage.startsWith("/")
       </div>
     </header>
 
-    <main class="mx-auto w-full max-w-container-max flex-grow px-margin-mobile pb-section-gap pt-32 md:px-margin-desktop">
-      <div class="grid grid-cols-1 gap-gutter lg:grid-cols-12">
-        <div class="flex flex-col gap-stack-md lg:col-span-8">
-          <div class="glass-panel group relative aspect-video w-full overflow-hidden rounded-lg border border-outline-variant">
-            <img
-              alt={project.data.title}
-              class="h-full w-full object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-              src={coverImageUrl}
-            />
-            <div class="absolute inset-0 flex items-center justify-center">
-              <a
-                href={project.data.videoUrl || "#"}
-                target="_blank"
-                rel="noreferrer"
-                class="flex h-20 w-20 items-center justify-center rounded-full border border-outline/50 bg-surface-container-high/80 shadow-[0_0_20px_rgba(157,80,187,0.3)] backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:border-tertiary"
-              >
-                <span class="material-symbols-outlined pl-1 text-4xl text-tertiary">play_arrow</span>
-              </a>
-            </div>
-          </div>
-          <section class="glass-panel prose prose-invert max-w-none rounded-lg p-stack-md">
-            <Content />
-          </section>
-        </div>
+    <main class="mx-auto w-full max-w-container-max flex-grow px-margin-mobile pb-section-gap pt-28 md:px-margin-desktop md:pt-32">
+      <!-- App info row (Play Store style) -->
+      <section class="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:gap-6">
+        <img
+          src={coverImageUrl}
+          alt={`${project.data.title} icon`}
+          class="h-24 w-24 shrink-0 rounded-[22%] object-cover shadow-glass sm:h-28 sm:w-28 md:h-32 md:w-32"
+        />
 
-        <aside class="flex flex-col gap-stack-lg lg:col-span-4">
-          <div class="flex flex-col gap-stack-sm">
+        <div class="flex min-w-0 flex-1 flex-col gap-stack-sm">
+          <div class="flex flex-col gap-2">
             <h1 class="font-headline-md text-headline-md tracking-tight text-on-surface">
               {project.data.title}
             </h1>
-            <div class="flex items-center gap-2 font-code-sm text-code-sm text-on-surface-variant">
-              <span class="material-symbols-outlined text-sm">calendar_month</span>
-              {publishedAt}
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-code-sm text-code-sm text-on-surface-variant">
+              <span class="inline-flex items-center gap-1 text-secondary">
+                <span class="material-symbols-outlined text-sm">calendar_month</span>
+                {publishedAt}
+              </span>
             </div>
           </div>
 
-          <div class="glass-panel rounded-lg p-stack-md">
-            <h3 class="mb-4 font-label-caps text-label-caps text-tertiary">核心功能</h3>
-            <p class="font-body-md text-body-md text-on-surface-variant">{project.data.summary}</p>
+          <div class="flex flex-wrap gap-2">
+            {
+              project.data.techStack.map((tech) => (
+                <span class="tech-badge rounded-full px-3 py-1 font-code-sm text-code-sm text-on-surface">
+                  {tech}
+                </span>
+              ))
+            }
           </div>
 
-          <div class="flex flex-col gap-stack-sm">
-            <h3 class="font-label-caps text-label-caps text-tertiary">技術棧</h3>
-            <div class="flex flex-wrap gap-2">
-              {project.data.techStack.map((tech) => (
-                <span class="tech-badge px-3 py-1 font-code-sm text-code-sm text-on-surface">{tech}</span>
-              ))}
-            </div>
-          </div>
-        </aside>
+          {
+            primaryCta && (
+              <div class="flex flex-wrap gap-3 pt-1">
+                <a
+                  href={primaryCta.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 font-code-sm text-code-sm font-semibold"
+                >
+                  {primaryCta.label}
+                </a>
+                {readmeUrls.slice(1).map((link) => (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-secondary inline-flex items-center justify-center rounded-full px-5 py-2.5 font-code-sm text-code-sm"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <!-- Media strip -->
+      <div class="mt-stack-lg">
+        <ProjectMediaCarousel
+          title={project.data.title}
+          videoUrl={project.data.videoUrl}
+          screenshots={project.data.screenshots}
+          baseWithSlash={baseWithSlash}
+        />
       </div>
 
-      <div class="mt-section-gap flex justify-center">
-        <a
-          class="group relative inline-flex w-full max-w-3xl items-center justify-center overflow-hidden rounded-lg border border-outline-variant bg-surface-container-high px-8 py-6 transition-all duration-300 hover:border-tertiary"
-          href={project.data.githubUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div class="absolute inset-0 h-full w-full -translate-x-full bg-gradient-to-r from-transparent via-tertiary/10 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-full">
-          </div>
-          <div class="relative flex items-center gap-4">
-            <span class="text-2xl">👉</span>
-            <span class="font-body-lg text-body-lg text-on-surface transition-colors duration-300 group-hover:text-tertiary">
-              點此開啟該作品的 README 展示頁
-            </span>
-            <span class="material-symbols-outlined text-on-surface-variant transition-all duration-300 group-hover:translate-x-1 group-hover:text-tertiary">
-              arrow_forward
-            </span>
-          </div>
-        </a>
-      </div>
+      <!-- About -->
+      <section class="mt-stack-lg flex flex-col gap-stack-md">
+        <h2 class="font-label-caps text-label-caps text-tertiary">關於此專案</h2>
+        <p class="max-w-3xl font-body-lg text-body-lg text-on-surface-variant">
+          {project.data.summary}
+        </p>
+        <div class="glass-panel prose prose-invert max-w-none rounded-2xl p-stack-md">
+          <Content />
+        </div>
+      </section>
     </main>
 
     <SiteFooter />

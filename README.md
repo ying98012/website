@@ -111,12 +111,14 @@ npm run build
    - `Summary`：簡短說明（詳情頁側欄會顯示）
    - `Tech Stack`：技術標籤列表
    - `Cover Image`：封面圖（上傳後會放到 `public/uploads/`）
-   - `GitHub URL`：請填 README 展示站網址（例如 `https://ying98012.github.io/portfolio-readmes/ai-ops-dashboard/`）
    - `Published At`：發布日期（列表依此由新到舊排序）
-4. 選填：`Video URL`、正文 `Content`（詳情頁內文）、`Featured`（是否上首頁精選）。
+4. 選填：
+   - `Screenshots`：作品截圖多圖（詳情頁橫向展示；可不上傳）
+   - `README URLs`：可新增多筆「標籤 + 網址」（例如 README 展示頁、Demo），不填則詳情頁不顯示連結按鈕
+   - `Video URL`、正文 `Content`（詳情頁內文）、`Featured`（是否上首頁精選）
 5. Save 後會新增 `src/content/projects/<slug>.md`，並觸發部署。
 
-新增前建議先在 `portfolio-readmes` 建好同名 slug 展示頁，再回來填 `GitHub URL`。`Slug` 建立後不建議再改，否則舊網址會失效。
+新增前建議先在 `portfolio-readmes` 建好同名 slug 展示頁，再回來填 `README URLs`。`Slug` 建立後不建議再改，否則舊網址會失效。
 
 ### 專案：修改
 
@@ -181,14 +183,20 @@ npm run dev
 
 ## README 展示站（README-only）
 
-作品詳情頁「開啟 README 展示頁」按鈕會連到外部文件站：
+作品詳情頁可透過 `README URLs` 新增多筆外部連結（標籤 + 網址）；未填則不顯示連結區。
 
-- 基底網址：`https://ying98012.github.io/portfolio-readmes/`
-- 連結欄位：`src/content/projects/*.md` 的 `githubUrl`
-- 範例：`https://ying98012.github.io/portfolio-readmes/ai-ops-dashboard/`
+- 基底網址（常用）：`https://ying98012.github.io/portfolio-readmes/`
+- 連結欄位：`src/content/projects/*.md` 的 `readmeUrls`
+- 範例：
+
+```yaml
+readmeUrls:
+  - label: README 展示頁
+    url: https://ying98012.github.io/portfolio-readmes/ai-ops-dashboard/
+```
 
 建議內容維護策略：
 
 1. 在 `portfolio-readmes`（公開 repo）維護 README 展示內容。
 2. 真正原始碼放 private repo，不對外公開。
-3. 新增作品時先建立同名 slug 展示頁，再更新本專案對應 `githubUrl`。
+3. 新增作品時先建立同名 slug 展示頁，再更新本專案對應 `readmeUrls`。
