@@ -4,16 +4,17 @@
 
 ## 網站與後台
 
-| 項目     | 網址                                       |
-| -------- | ------------------------------------------ |
-| 網站     | https://ying98012.github.io/website/       |
-| 管理後台 | https://ying98012.github.io/website/admin/ |
-| CMS 平台 | [pagescms.org](https://pagescms.org/)      |
-| 原始碼   | https://github.com/ying98012/website       |
+| 項目     | 網址                                          |
+| -------- | --------------------------------------------- |
+| 網站     | https://ying98012.github.io/website/          |
+| 管理後台 | [app.pagescms.org](https://app.pagescms.org/) |
+| CMS 平台 | [Pages CMS](https://app.pagescms.org/)        |
+| 原始碼   | https://github.com/ying98012/website          |
 
 ## 核心特點
 
 - **Git-based CMS**：Pages CMS 儲存後直接 commit 到 GitHub，觸發部署。
+- **一鍵進後台**：導覽「管理後台」直接開啟 `https://app.pagescms.org/`（新分頁）。
 - **Content Collections**：以 schema 管理 projects 與各靜態頁內容。
 - **多頁導覽**：首頁、全部專案、專案詳情、經歷、技術棧、聯絡我。
 - **精選／全部分離**：首頁只顯示 `featured: true`；`/projects/` 顯示全部專案。
@@ -87,10 +88,12 @@ npm run build
 
 ### 第一次使用
 
-1. 開啟站內 `/admin/`，或到 [pagescms.org](https://pagescms.org/) 登入。
+1. 點網站導覽「管理後台」，或直接開啟 [app.pagescms.org](https://app.pagescms.org/)。
 2. 用 GitHub 登入，授權 Pages CMS App 可寫入 `ying98012/website`。
 3. 選擇此 repo；介面依 `.pages.yml` 顯示可編輯內容。
 4. Save 後會 commit 到 `main` 並觸發部署（通常數分鐘；請到 Actions 確認成功）。
+
+站內仍保留 `/admin/` 說明頁與 `admin/config.yml` 相容檔，但日常編輯以 Pages CMS App 為準。
 
 ### 後台可編輯項目
 
