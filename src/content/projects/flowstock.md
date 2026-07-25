@@ -20,7 +20,7 @@ screenshots:
   - /uploads/flowstock/Frame 815.png
   - /uploads/flowstock/Frame 816.png
   - /uploads/flowstock/Frame 817.png
-videoUrl: https://youtube.com/playlist?list=PLVWtrK32sJFk&si=v3h4VyxIfEoF9QIp
+videoUrl: https://youtu.be/6EX1-liT6_M?si=1AQI5Sxt6vm9moub
 readmeUrls:
   - label: README 展示頁
     url: https://ying98012.github.io/portfolio-readmes/Flowstock%E5%BA%AB%E5%AD%98%E7%AE%A1%E7%90%86/
