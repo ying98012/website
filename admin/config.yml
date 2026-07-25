@@ -8,7 +8,7 @@ content:
     label: Projects
     type: collection
     path: src/content/projects
-    filename: "{fields.slug}"
+    filename: "{fields.slug}.md"
     view:
       fields: [title, publishedAt, featured]
       primary: title

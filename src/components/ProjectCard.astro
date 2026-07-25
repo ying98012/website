@@ -1,5 +1,4 @@
 ---
-import TechBadge from "@/components/TechBadge.astro";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -15,30 +14,43 @@ const coverImageUrl = project.data.coverImage.startsWith("/")
   : project.data.coverImage;
 ---
 
-<a
-  href={projectUrl}
-  class="group glass-panel block overflow-hidden rounded-xl transition hover:shadow-neon-blue"
->
-  <img
-    src={coverImageUrl}
-    alt={`${project.data.title} cover`}
-    class="aspect-video w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-    loading="lazy"
-  />
-  <div class="space-y-3 p-4">
-    <div class="flex items-center justify-between gap-3">
-      <h3 class="text-xl font-bold">{project.data.title}</h3>
-      {project.data.featured && (
-        <span class="rounded-full bg-vibrant-accent px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-obsidian-neonBlue">
+<article class="glass-panel glass-panel-hover group flex h-full w-full flex-col overflow-hidden transition-all duration-300">
+  <div class="relative aspect-video w-full overflow-hidden bg-surface-container-highest">
+    <img
+      alt={project.data.title}
+      class="h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+      src={coverImageUrl}
+      loading="lazy"
+    />
+    {
+      project.data.featured && (
+        <span class="absolute right-3 top-3 rounded bg-surface-container-high/90 px-3 py-1 font-code-sm text-code-sm uppercase tracking-[0.18em] text-brand-blue backdrop-blur-sm">
           Featured
         </span>
-      )}
-    </div>
-    <p class="text-sm text-obsidian-muted">{project.data.summary}</p>
-    <div class="flex flex-wrap gap-2">
-      {project.data.techStack.map((tech) => (
-        <TechBadge label={tech} />
-      ))}
-    </div>
+      )
+    }
   </div>
-</a>
+  <div class="flex flex-grow flex-col justify-between p-stack-md">
+    <div>
+      <h3 class="mb-stack-sm font-headline-md text-headline-md text-on-surface transition-colors duration-300 group-hover:text-brand-blue">
+        {project.data.title}
+      </h3>
+      <div class="mb-stack-md flex flex-wrap gap-2">
+        {
+          project.data.techStack.map((tech) => (
+            <span class="tech-badge px-2 py-1 font-code-sm text-code-sm text-on-surface-variant">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+    <a
+      class="flex w-fit items-center gap-1 font-code-sm text-code-sm text-brand-purple transition-colors duration-300 hover:text-brand-blue"
+      href={projectUrl}
+    >
+      <span class="material-symbols-outlined text-sm">description</span>
+      View README.md 文檔
+    </a>
+  </div>
+</article>

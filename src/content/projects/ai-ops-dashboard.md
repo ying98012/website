@@ -9,7 +9,7 @@ techStack:
   - Tailwind
 coverImage: /uploads/ai-ops-dashboard.svg
 videoUrl: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-githubUrl: https://github.com/ying98012/ai-ops-dashboard
+githubUrl: https://ying98012.github.io/portfolio-readmes/ai-ops-dashboard/
 featured: true
 publishedAt: 2026-05-01
 ---

@@ -14,6 +14,21 @@ const {
   mainClass = "mx-auto min-h-screen max-w-container px-5 py-10 md:px-16",
   disableMainWrapper = false
 } = Astro.props;
+
+/** GitHub Pages 無法自訂 HTTP header，以 meta 注入 CSP。 */
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: https:",
+  "connect-src 'self'",
+  "frame-src https://www.youtube.com https://player.vimeo.com",
+  "upgrade-insecure-requests",
+].join("; ");
 ---
 
 <!doctype html>
@@ -23,6 +38,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy} />
   </head>
   <body>
     {

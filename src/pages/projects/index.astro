@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+---
+
+<BaseLayout
+  title="全部專案 | Weiying Portfolio"
+  description="瀏覽所有作品與技術文件"
+  disableMainWrapper={true}
+>
+  <div class="flex min-h-screen flex-col pt-20">
+    <TopNav active="projects" />
+
+    <main class="mx-auto w-full max-w-container-max flex-grow px-margin-mobile pb-section-gap pt-32 md:px-margin-desktop">
+      <header class="mb-stack-lg border-b border-outline-variant/10 pb-stack-sm">
+        <h1 class="font-headline-md text-headline-md text-on-surface">全部專案</h1>
+        <p class="mt-2 font-body-md text-body-md text-on-surface-variant">
+          完整作品列表，依發布時間由新到舊排序
+        </p>
+      </header>
+
+      {
+        projects.length > 0 ? (
+          <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
+        ) : (
+          <p class="font-body-md text-body-md text-on-surface-variant">目前還沒有專案</p>
+        )
+      }
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>
