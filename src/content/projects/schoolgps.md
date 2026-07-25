@@ -9,11 +9,16 @@ techStack:
   - Firebase
   - Gemini
   - Room
-coverImage: /uploads/專題圖片/Screenshot_20260725_164637.jpg
-coverAspect: portrait
+coverImage: /uploads/Gemini_Generated_Image_lm7dj7lm7dj7lm7d.png
+coverAspect: square
 screenshots:
   - /uploads/專題圖片/Screenshot_20260725_164637.jpg
   - /uploads/專題圖片/Screenshot_20260725_164656.jpg
+  - /uploads/專題圖片/Screenshot_20260725_164659.jpg
+  - /uploads/專題圖片/Screenshot_20260725_164755.jpg
+  - /uploads/專題圖片/Screenshot_20260725_164803.jpg
+  - /uploads/專題圖片/Screenshot_20260725_164810.jpg
+  - /uploads/專題圖片/Screenshot_20260725_164816.jpg
 videoUrl: https://youtu.be/oAL-C9KxIZs
 readmeUrls:
   - label: README 展示頁
