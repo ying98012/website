@@ -94,13 +94,13 @@ npm run build
 
 ### 後台可編輯項目
 
-| 後台項目        | 對應檔案                                 | 影響頁面                                   |
-| --------------- | ---------------------------------------- | ------------------------------------------ |
-| Projects        | `src/content/projects/*.md`              | 首頁精選、全部專案、專案詳情               |
-| Home Page       | `src/content/home-page/content.md`       | 首頁標題、按鈕、精選區標題                 |
-| Experience Page | `src/content/experience-page/content.md` | 經歷頁                                     |
+| 後台項目        | 對應檔案                                 | 影響頁面                            |
+| --------------- | ---------------------------------------- | ----------------------------------- |
+| Projects        | `src/content/projects/*.md`              | 首頁精選、全部專案、專案詳情        |
+| Home Page       | `src/content/home-page/content.md`       | 首頁標題、按鈕、精選區標題          |
+| Experience Page | `src/content/experience-page/content.md` | 經歷頁                              |
 | Stack Page      | `src/content/stack-page/content.md`      | 技術棧頁（技能、工具、Foundations） |
-| Contact Page    | `src/content/contact-page/content.md`    | 聯絡我頁                                   |
+| Contact Page    | `src/content/contact-page/content.md`    | 聯絡我頁                            |
 
 ### 修改一般頁面（首頁／經歷／技術棧／聯絡）
 
