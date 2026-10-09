@@ -1,4 +1,7 @@
 ---
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import { defaultLocale, localePath, t, type Locale } from "@/i18n/utils";
+
 type NavKey = "home" | "projects" | "experience" | "stack" | "contact";
 
 interface NavItem {
@@ -9,25 +12,35 @@ interface NavItem {
 
 interface Props {
   active?: NavKey;
+  locale?: Locale;
+  path?: string;
 }
 
-const { active = "home" } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const baseWithSlash = base.endsWith("/") ? base : `${base}/`;
+const { active = "home", locale = defaultLocale, path } = Astro.props;
 const adminUrl = "https://app.pagescms.org/";
 
+const pathByNav: Record<NavKey, string> = {
+  home: "",
+  projects: "projects",
+  experience: "experience",
+  stack: "stack",
+  contact: "contact",
+};
+
+const switcherPath = path ?? pathByNav[active];
+
 const navItems: NavItem[] = [
-  { key: "home", label: "首頁", href: baseWithSlash },
-  { key: "projects", label: "全部專案", href: `${baseWithSlash}projects/` },
-  { key: "experience", label: "經歷", href: `${baseWithSlash}experience/` },
-  { key: "stack", label: "技術棧", href: `${baseWithSlash}stack/` },
-  { key: "contact", label: "聯絡我", href: `${baseWithSlash}contact/` }
+  { key: "home", label: t(locale, "navHome"), href: localePath(locale, "") },
+  { key: "projects", label: t(locale, "navProjects"), href: localePath(locale, "projects") },
+  { key: "experience", label: t(locale, "navExperience"), href: localePath(locale, "experience") },
+  { key: "stack", label: t(locale, "navStack"), href: localePath(locale, "stack") },
+  { key: "contact", label: t(locale, "navContact"), href: localePath(locale, "contact") },
 ];
 ---
 
 <nav class="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-background/80 backdrop-blur-md">
   <div class="mx-auto flex h-20 max-w-container-max items-center justify-between px-margin-mobile md:px-margin-desktop">
-    <span class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">個人網站</span>
+    <span class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">{t(locale, "siteBrand")}</span>
     <ul class="hidden items-center gap-8 md:flex">
       {
         navItems.map((item) => (
@@ -42,14 +55,15 @@ const navItems: NavItem[] = [
         ))
       }
     </ul>
-    <div class="flex items-center">
+    <div class="flex items-center gap-4 md:gap-6">
+      <LanguageSwitcher locale={locale} path={switcherPath} />
       <a
         class="font-body-md text-body-md text-secondary transition-transform duration-300 hover:text-secondary active:scale-95"
         href={adminUrl}
         target="_blank"
         rel="noreferrer noopener"
       >
-        管理後台
+        {t(locale, "navAdmin")}
       </a>
     </div>
   </div>

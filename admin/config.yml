@@ -4,21 +4,21 @@ media:
   path: "{{year}}/{{month}}"
 
 content:
-  - name: projects
-    label: Projects
+  - name: projectsZhHant
+    label: Projects (繁中)
     type: collection
-    path: src/content/projects
-    filename: "{fields.slug}.md"
+    path: src/content/projects/zh-Hant
+    filename: "{fields.projectSlug}.md"
     view:
       fields: [title, publishedAt, featured]
       primary: title
       sort: [publishedAt, desc]
-    fields:
+    fields: &projectFields
       - name: title
         label: Project Title
         type: string
         required: true
-      - name: slug
+      - name: projectSlug
         label: Slug
         type: string
         required: true
@@ -82,11 +82,22 @@ content:
         label: Content
         type: rich-text
 
-  - name: homePage
-    label: Home Page
+  - name: projectsEn
+    label: Projects (English)
+    type: collection
+    path: src/content/projects/en
+    filename: "{fields.projectSlug}.md"
+    view:
+      fields: [title, publishedAt, featured]
+      primary: title
+      sort: [publishedAt, desc]
+    fields: *projectFields
+
+  - name: homePageZhHant
+    label: Home Page (繁中)
     type: file
-    path: src/content/home-page/content.md
-    fields:
+    path: src/content/home-page/zh-Hant.md
+    fields: &homeFields
       - name: heroTitle
         label: Hero Title
         type: string
@@ -123,11 +134,17 @@ content:
         label: Notes
         type: rich-text
 
-  - name: experiencePage
-    label: Experience Page
+  - name: homePageEn
+    label: Home Page (English)
     type: file
-    path: src/content/experience-page/content.md
-    fields:
+    path: src/content/home-page/en.md
+    fields: *homeFields
+
+  - name: experiencePageZhHant
+    label: Experience Page (繁中)
+    type: file
+    path: src/content/experience-page/zh-Hant.md
+    fields: &experienceFields
       - name: pageTitle
         label: Page Title
         type: string
@@ -167,11 +184,17 @@ content:
         label: Notes
         type: rich-text
 
-  - name: stackPage
-    label: Stack Page
+  - name: experiencePageEn
+    label: Experience Page (English)
     type: file
-    path: src/content/stack-page/content.md
-    fields:
+    path: src/content/experience-page/en.md
+    fields: *experienceFields
+
+  - name: stackPageZhHant
+    label: Stack Page (繁中)
+    type: file
+    path: src/content/stack-page/zh-Hant.md
+    fields: &stackFields
       - name: pageTitle
         label: Page Title
         type: string
@@ -207,11 +230,17 @@ content:
         label: Notes
         type: rich-text
 
-  - name: contactPage
-    label: Contact Page
+  - name: stackPageEn
+    label: Stack Page (English)
     type: file
-    path: src/content/contact-page/content.md
-    fields:
+    path: src/content/stack-page/en.md
+    fields: *stackFields
+
+  - name: contactPageZhHant
+    label: Contact Page (繁中)
+    type: file
+    path: src/content/contact-page/zh-Hant.md
+    fields: &contactFields
       - name: title
         label: Title
         type: string
@@ -248,3 +277,9 @@ content:
       - name: body
         label: Notes
         type: rich-text
+
+  - name: contactPageEn
+    label: Contact Page (English)
+    type: file
+    path: src/content/contact-page/en.md
+    fields: *contactFields

@@ -6,10 +6,10 @@ import {
   getProjectRouteSlug,
 } from "@/i18n/utils";
 
-const locale = "zh-Hant" as const;
+const locale = "en" as const;
 
 export async function getStaticPaths() {
-  const projects = await getLocalizedProjects("zh-Hant");
+  const projects = await getLocalizedProjects("en");
   return projects.map((project) => ({
     params: { slug: getProjectRouteSlug(project) },
   }));

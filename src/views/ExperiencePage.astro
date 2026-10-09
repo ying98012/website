@@ -1,0 +1,68 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import { getLocalizedPage, t, type Locale } from "@/i18n/utils";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const experiencePage = await getLocalizedPage("experience-page", locale);
+---
+
+<BaseLayout
+  title={t(locale, "experienceMetaTitle")}
+  description={t(locale, "experienceMetaDescription")}
+  locale={locale}
+  alternatePath="experience"
+  disableMainWrapper={true}
+>
+  <div class="relative flex min-h-screen flex-col overflow-x-hidden pt-20">
+    <TopNav active="experience" locale={locale} />
+
+    <main class="relative mx-auto w-full max-w-container-max flex-grow px-margin-mobile pb-section-gap pt-32 md:px-margin-desktop">
+      <div class="pointer-events-none absolute right-10 top-40 -z-10 h-96 w-96 rounded-full bg-secondary-container/5 blur-[100px]"></div>
+      <div class="pointer-events-none absolute bottom-40 left-10 -z-10 h-96 w-96 rounded-full bg-tertiary-container/10 blur-[100px]"></div>
+
+      <header class="relative z-10 mb-24 text-center md:text-left">
+        <h1 id="experience-page-title" class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg">
+          {experiencePage.data.pageTitle}
+        </h1>
+        <p id="experience-page-description" class="mt-3 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+          {experiencePage.data.pageDescription}
+        </p>
+      </header>
+
+      <div id="experience-timeline" class="relative mt-section-gap pl-8 md:pl-0">
+        <div class="pointer-events-none absolute bottom-0 left-8 top-0 w-px bg-outline-variant/30 md:left-1/2 md:-translate-x-1/2"></div>
+        {
+          experiencePage.data.timeline.map((item, index) => (
+            <article
+              class={`relative mb-section-gap flex flex-col items-start justify-between gap-6 md:flex-row md:items-center ${index === experiencePage.data.timeline.length - 1 ? "mb-0" : ""}`}
+            >
+              <span class="absolute left-[-5px] top-0 z-10 h-3 w-3 rounded-full bg-secondary-container shadow-neon-blue md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2"></span>
+              <div class={`w-full md:w-[45%] ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:order-2 md:pl-12"}`}>
+                <div class="relative overflow-hidden border border-outline-variant/30 bg-surface/5 p-stack-md backdrop-blur-md transition-all duration-300 hover:border-secondary/50 hover:bg-surface/10">
+                  <p class="mb-2 font-code-sm text-code-sm text-secondary-container">{item.period}</p>
+                  <h2 class="mb-1 text-xl font-bold text-on-surface">{item.role}</h2>
+                  <p class="mb-stack-md font-body-md text-body-md text-on-surface-variant">{item.company}</p>
+                  <ul class={`mb-stack-md space-y-3 font-code-sm text-code-sm text-on-surface-variant ${index % 2 === 0 ? "md:text-right" : "text-left"}`}>
+                    {item.highlights.map((highlight) => <li class={`flex items-start gap-2 ${index % 2 === 0 ? "md:justify-end" : ""}`}><span class="shrink-0 text-secondary">&gt;</span><span>{highlight}</span></li>)}
+                  </ul>
+                  <div class={`flex flex-wrap gap-2 ${index % 2 === 0 ? "md:justify-end" : ""}`}>
+                    {item.tech.map((tech) => <span class="tech-badge px-2 py-1 font-code-sm text-code-sm text-on-surface">{tech}</span>)}
+                  </div>
+                </div>
+              </div>
+              <div class={`hidden md:block md:w-[45%] ${index % 2 === 0 ? "" : "md:order-1"}`}></div>
+            </article>
+          ))
+        }
+      </div>
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

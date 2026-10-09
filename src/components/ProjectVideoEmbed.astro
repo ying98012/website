@@ -1,10 +1,14 @@
 ---
+import { defaultLocale, t, type Locale } from "@/i18n/utils";
+
 interface Props {
   url: string;
   title?: string;
+  locale?: Locale;
 }
 
-const { url, title = "專案示範影片" } = Astro.props;
+const { url, locale = defaultLocale } = Astro.props;
+const title = Astro.props.title ?? t(locale, "projectDemoVideo");
 
 const toEmbedUrl = (rawUrl: string): string | undefined => {
   try {
@@ -49,7 +53,7 @@ const embedUrl = toEmbedUrl(url);
       class="flex h-full w-full flex-col items-center justify-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-high transition-colors duration-300 hover:border-tertiary"
     >
       <span class="material-symbols-outlined text-5xl text-tertiary">play_circle</span>
-      <span class="font-body-md text-body-md text-on-surface">開啟外部影片</span>
+      <span class="font-body-md text-body-md text-on-surface">{t(locale, "projectOpenExternalVideo")}</span>
     </a>
   )
 }

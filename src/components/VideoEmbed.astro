@@ -1,9 +1,12 @@
 ---
+import { defaultLocale, t, type Locale } from "@/i18n/utils";
+
 interface Props {
   url?: string;
+  locale?: Locale;
 }
 
-const { url } = Astro.props;
+const { url, locale = defaultLocale } = Astro.props;
 
 const toEmbedUrl = (rawUrl?: string): string | undefined => {
   if (!rawUrl) return undefined;
@@ -40,7 +43,7 @@ const embedUrl = toEmbedUrl(url);
     </div>
   ) : (
     <div class="glass-panel rounded-lg p-6 text-sm text-obsidian-muted">
-      此專案暫無可嵌入影片。
+      {t(locale, "projectNoEmbedVideo")}
     </div>
   )
 }

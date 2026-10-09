@@ -1,19 +1,36 @@
 ---
 import "../styles/global.css";
+import {
+  buildAlternateUrls,
+  defaultLocale,
+  t,
+  type Locale,
+} from "@/i18n/utils";
 
 interface Props {
   title: string;
   description?: string;
+  locale?: Locale;
+  alternatePath?: string;
   mainClass?: string;
   disableMainWrapper?: boolean;
 }
 
 const {
   title,
-  description = "以 Astro 建立的工程師作品集網站。",
+  locale = defaultLocale,
+  alternatePath = "",
   mainClass = "mx-auto min-h-screen max-w-container px-5 py-10 md:px-16",
-  disableMainWrapper = false
+  disableMainWrapper = false,
 } = Astro.props;
+
+const description = Astro.props.description ?? t(locale, "defaultDescription");
+const alternates = buildAlternateUrls(locale, alternatePath);
+const site = Astro.site;
+const absoluteAlternates = alternates.map(({ locale: loc, href }) => {
+  const absolute = site != null ? new URL(href, site).href : href;
+  return { locale: loc, href: absolute };
+});
 
 /** GitHub Pages 無法自訂 HTTP header，以 meta 注入 CSP。 */
 const contentSecurityPolicy = [
@@ -32,13 +49,23 @@ const contentSecurityPolicy = [
 ---
 
 <!doctype html>
-<html lang="zh-Hant">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy} />
+    {
+      absoluteAlternates.map(({ locale: loc, href }) => (
+        <link rel="alternate" hreflang={loc} href={href} />
+      ))
+    }
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={absoluteAlternates.find((item) => item.locale === defaultLocale)?.href}
+    />
   </head>
   <body>
     {

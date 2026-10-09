@@ -1,6 +1,6 @@
 ---
 title: FlowStock｜智慧雙軌 AI 進銷存
-slug: flowstock
+projectSlug: flowstock
 summary: 面向中小商家的 Local-First Flutter 進銷存 App：訂單驅動庫存流水、多量詞成本與端雲雙軌 AI 經營顧問。
 techStack:
   - Flutter

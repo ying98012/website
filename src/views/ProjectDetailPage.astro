@@ -1,0 +1,151 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import ProjectMediaCarousel from "@/components/ProjectMediaCarousel.astro";
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import {
+  dateLocales,
+  getProjectRouteSlug,
+  localePath,
+  t,
+  type Locale,
+} from "@/i18n/utils";
+
+interface Props {
+  locale: Locale;
+  project: CollectionEntry<"projects">;
+}
+
+const { locale, project } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const baseWithSlash = base.endsWith("/") ? base : `${base}/`;
+const routeSlug = getProjectRouteSlug(project);
+const { Content } = await project.render();
+const publishedAt = project.data.publishedAt.toLocaleDateString(dateLocales[locale], {
+  year: "numeric",
+  month: "long",
+});
+const projectsListUrl = localePath(locale, "projects");
+const coverImageUrl = project.data.coverImage.startsWith("/")
+  ? `${baseWithSlash}${project.data.coverImage.slice(1)}`
+  : project.data.coverImage;
+const readmeUrls = project.data.readmeUrls;
+const primaryCta = readmeUrls[0];
+const coverSizeClass = {
+  square: "h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32",
+  portrait: "h-32 w-24 sm:h-36 sm:w-28 md:h-40 md:w-28",
+  landscape: "h-20 w-32 sm:h-24 sm:w-36 md:h-28 md:w-40",
+}[project.data.coverAspect];
+---
+
+<BaseLayout
+  title={`${project.data.title} | Weiying Portfolio`}
+  description={project.data.summary}
+  locale={locale}
+  alternatePath={`projects/${routeSlug}`}
+  disableMainWrapper={true}
+>
+  <div class="flex min-h-screen flex-col">
+    <header class="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-background/80 backdrop-blur-md">
+      <div
+        class="mx-auto flex h-16 max-w-container-max items-center justify-between gap-4 px-margin-mobile md:h-20 md:px-margin-desktop"
+      >
+        <div class="font-display-lg text-display-lg-mobile tracking-tighter text-on-surface">
+          {t(locale, "siteBrand")}
+        </div>
+        <div class="flex items-center gap-4 md:gap-6">
+          <LanguageSwitcher locale={locale} path={`projects/${routeSlug}`} />
+          <a
+            class="flex items-center gap-2 font-body-md text-body-md text-secondary transition-colors duration-300 hover:text-on-surface-variant"
+            href={projectsListUrl}
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            {t(locale, "projectBackToList")}
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-container-max flex-grow px-margin-mobile pb-section-gap pt-28 md:px-margin-desktop md:pt-32">
+      <section class="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:gap-6">
+        <img
+          src={coverImageUrl}
+          alt={`${project.data.title} icon`}
+          class:list={["shrink-0 rounded-[22%] object-cover shadow-glass", coverSizeClass]}
+        />
+
+        <div class="flex min-w-0 flex-1 flex-col gap-stack-sm">
+          <div class="flex flex-col gap-2">
+            <h1 class="font-headline-md text-headline-md tracking-tight text-on-surface">
+              {project.data.title}
+            </h1>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-code-sm text-code-sm text-on-surface-variant">
+              <span class="inline-flex items-center gap-1 text-secondary">
+                <span class="material-symbols-outlined text-sm">calendar_month</span>
+                {publishedAt}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            {
+              project.data.techStack.map((tech) => (
+                <span class="tech-badge rounded-full px-3 py-1 font-code-sm text-code-sm text-on-surface">
+                  {tech}
+                </span>
+              ))
+            }
+          </div>
+
+          {
+            primaryCta && (
+              <div class="flex flex-wrap gap-3 pt-1">
+                <a
+                  href={primaryCta.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 font-code-sm text-code-sm font-semibold"
+                >
+                  {primaryCta.label}
+                </a>
+                {readmeUrls.slice(1).map((link) => (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-secondary inline-flex items-center justify-center rounded-full px-5 py-2.5 font-code-sm text-code-sm"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </section>
+
+      <div class="mt-stack-lg">
+        <ProjectMediaCarousel
+          title={project.data.title}
+          videoUrl={project.data.videoUrl}
+          screenshots={project.data.screenshots}
+          baseWithSlash={baseWithSlash}
+          locale={locale}
+        />
+      </div>
+
+      <section class="mt-stack-lg flex flex-col gap-stack-md">
+        <h2 class="font-label-caps text-label-caps text-tertiary">{t(locale, "projectAbout")}</h2>
+        <p class="max-w-3xl font-body-lg text-body-lg text-on-surface-variant">
+          {project.data.summary}
+        </p>
+        <div class="glass-panel prose prose-invert max-w-none rounded-2xl p-stack-md">
+          <Content />
+        </div>
+      </section>
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

@@ -1,0 +1,89 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import TopNav from "@/components/TopNav.astro";
+import {
+  getLocalizedPage,
+  getLocalizedProjects,
+  t,
+  type Locale,
+} from "@/i18n/utils";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const projects = (await getLocalizedProjects(locale)).filter(
+  (project) => project.data.featured,
+);
+const homePage = await getLocalizedPage("home-page", locale);
+---
+
+<BaseLayout
+  title="Weiying Portfolio"
+  description={t(locale, "homeMetaDescription")}
+  locale={locale}
+  alternatePath=""
+  disableMainWrapper={true}
+>
+  <div class="flex min-h-screen flex-col pt-20">
+    <TopNav active="home" locale={locale} />
+
+    <main class="flex-grow">
+      <section
+        class="mx-auto flex max-w-container-max flex-col items-center px-margin-mobile py-section-gap text-center md:px-margin-desktop"
+      >
+        <h1 class="mb-stack-md max-w-4xl font-display-lg-mobile text-display-lg-mobile leading-tight tracking-tight md:font-display-lg md:text-display-lg">
+          {homePage.data.heroTitle}
+        </h1>
+        <p class="mb-stack-lg max-w-3xl font-body-lg text-body-lg leading-relaxed text-on-surface-variant">
+          {homePage.data.heroDescription}
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-gutter">
+          <a
+            class="btn-primary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
+            href={homePage.data.primaryButtonUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="material-symbols-outlined">code</span>
+            {homePage.data.primaryButtonLabel}
+          </a>
+          <a
+            class="btn-secondary flex items-center gap-2 rounded px-6 py-3 font-label-caps text-label-caps"
+            href={homePage.data.secondaryButtonUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="material-symbols-outlined">work</span>
+            {homePage.data.secondaryButtonLabel}
+          </a>
+        </div>
+      </section>
+
+      <section id="projects" class="mx-auto max-w-container-max px-margin-mobile pb-section-gap md:px-margin-desktop">
+        <header class="mb-stack-lg border-b border-outline-variant/10 pb-stack-sm">
+          <div>
+            <h2 class="font-headline-md text-headline-md text-on-surface">{homePage.data.projectsTitle}</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">{homePage.data.projectsDescription}</p>
+          </div>
+        </header>
+        {
+          projects.length > 0 ? (
+            <div class="grid grid-cols-1 gap-gutter md:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => (
+                <ProjectCard project={project} locale={locale} />
+              ))}
+            </div>
+          ) : (
+            <p class="font-body-md text-body-md text-on-surface-variant">{t(locale, "homeEmptyFeatured")}</p>
+          )
+        }
+      </section>
+    </main>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

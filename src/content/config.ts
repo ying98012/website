@@ -4,7 +4,8 @@ const projects = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    slug: z.string().optional(),
+    /** Public URL segment; do not use frontmatter key `slug` (reserved by Astro). */
+    projectSlug: z.string().optional(),
     summary: z.string(),
     techStack: z.array(z.string()).min(1),
     coverImage: z.string(),
