@@ -1,39 +1,115 @@
 ---
-import {
-  alternateLocale,
-  localePath,
-  t,
-  type Locale,
-} from "@/i18n/utils";
+import { localePath, t, type Locale } from "@/i18n/utils";
 
 interface Props {
   locale: Locale;
   path?: string;
 }
 
+/** Endonyms — keep labels in each language’s own script; add entries when locales grow. */
+const localeLabels: Record<Locale, string> = {
+  "zh-Hant": "中文",
+  en: "English",
+};
+
+const localeHtmlLang: Record<Locale, string> = {
+  "zh-Hant": "zh-Hant",
+  en: "en",
+};
+
 const { locale, path = "" } = Astro.props;
-const otherLocale = alternateLocale(locale);
-const otherHref = localePath(otherLocale, path);
+
+const options = (Object.keys(localeLabels) as Locale[]).map((code) => ({
+  locale: code,
+  label: localeLabels[code],
+  href: localePath(code, path),
+  htmlLang: localeHtmlLang[code],
+  isActive: code === locale,
+}));
+
+const currentLabel = localeLabels[locale];
 ---
 
-<nav class="flex items-center gap-2 font-body-md text-body-md" aria-label={t(locale, "langSwitcherLabel")}>
-  {
-    locale === "zh-Hant" ? (
-      <span class="text-secondary" aria-current="true">{t(locale, "langZh")}</span>
-    ) : (
-      <a class="text-on-surface-variant transition-colors duration-300 hover:text-secondary" href={localePath("zh-Hant", path)}>
-        {t(locale, "langZh")}
-      </a>
-    )
-  }
-  <span class="text-outline-variant" aria-hidden="true">/</span>
-  {
-    locale === "en" ? (
-      <span class="text-secondary" aria-current="true">{t(locale, "langEn")}</span>
-    ) : (
-      <a class="text-on-surface-variant transition-colors duration-300 hover:text-secondary" href={otherHref}>
-        {t(locale, "langEn")}
-      </a>
-    )
-  }
-</nav>
+<details class="lang-switcher group relative">
+  <summary
+    class="flex cursor-pointer list-none items-center gap-2 [&::-webkit-details-marker]:hidden"
+    aria-label={t(locale, "langSwitcherLabel")}
+  >
+    <span
+      class="material-symbols-outlined text-xl leading-none text-on-surface-variant transition-colors duration-300 group-hover:text-secondary group-open:text-secondary"
+      aria-hidden="true"
+    >
+      language
+    </span>
+    <span
+      class="flex items-center gap-1 rounded-full border border-outline-variant/25 bg-surface-container-lowest/70 px-3 py-1.5 font-code-sm text-code-sm text-on-surface backdrop-blur-sm transition-colors duration-300 group-hover:border-secondary/40 group-open:border-secondary/40"
+    >
+      <span class="tracking-wide">{currentLabel}</span>
+      <span
+        class="material-symbols-outlined text-sm leading-none text-on-surface-variant transition-transform duration-300 group-open:rotate-180"
+        aria-hidden="true"
+      >
+        expand_more
+      </span>
+    </span>
+  </summary>
+
+  <ul
+    class="absolute right-0 z-50 mt-2 min-w-[9.5rem] overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest/95 py-1 shadow-glass backdrop-blur-md"
+    role="listbox"
+    aria-label={t(locale, "langSwitcherLabel")}
+  >
+    {
+      options.map((option) => (
+        <li role="option" aria-selected={option.isActive}>
+          {option.isActive ? (
+            <span class="flex items-center justify-between gap-3 px-3 py-2 font-code-sm text-code-sm text-secondary">
+              <span lang={option.htmlLang}>{option.label}</span>
+              <span class="material-symbols-outlined text-sm" aria-hidden="true">
+                check
+              </span>
+            </span>
+          ) : (
+            <a
+              class="block px-3 py-2 font-code-sm text-code-sm text-on-surface-variant transition-colors duration-200 hover:bg-white/5 hover:text-on-surface"
+              href={option.href}
+              lang={option.htmlLang}
+              hreflang={option.locale}
+            >
+              {option.label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  const switchers = document.querySelectorAll<HTMLDetailsElement>("details.lang-switcher");
+
+  switchers.forEach((switcher) => {
+    switcher.addEventListener("toggle", () => {
+      if (!switcher.open) return;
+      switchers.forEach((other) => {
+        if (other !== switcher) other.open = false;
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Node | null;
+    switchers.forEach((switcher) => {
+      if (switcher.open && target && !switcher.contains(target)) {
+        switcher.open = false;
+      }
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    switchers.forEach((switcher) => {
+      switcher.open = false;
+    });
+  });
+</script>
